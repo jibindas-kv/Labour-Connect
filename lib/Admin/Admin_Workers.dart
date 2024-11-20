@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AdminFeedbacklist extends StatefulWidget {
-  const AdminFeedbacklist({super.key});
+class Admin_Workers extends StatefulWidget {
+  const Admin_Workers({super.key});
 
   @override
-  State<AdminFeedbacklist> createState() => _AdminFeedbacklistState();
+  State<Admin_Workers> createState() => _Admin_WorkersState();
 }
 
-class _AdminFeedbacklistState extends State<AdminFeedbacklist> {
+class _Admin_WorkersState extends State<Admin_Workers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class _AdminFeedbacklistState extends State<AdminFeedbacklist> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Feedbacks",
+              "Rejected",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -52,7 +52,7 @@ class _AdminFeedbacklistState extends State<AdminFeedbacklist> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Customer Name",
+                                "Worker Name",
                                 style: TextStyle(fontWeight: FontWeight.w600),
                               ),
                               Text(

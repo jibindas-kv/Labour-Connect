@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Adminworkers extends StatefulWidget {
-  const Adminworkers({super.key});
+class Admin_WorkerListView extends StatefulWidget {
+  const Admin_WorkerListView({super.key});
 
   @override
-  State<Adminworkers> createState() => _AdminworkersState();
+  State<Admin_WorkerListView> createState() => _Admin_WorkerListViewState();
 }
 
-class _AdminworkersState extends State<Adminworkers> {
+class _Admin_WorkerListViewState extends State<Admin_WorkerListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class _AdminworkersState extends State<Adminworkers> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Rejected",
+              "Workers",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,

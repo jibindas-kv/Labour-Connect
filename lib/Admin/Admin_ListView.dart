@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Admin_listview extends StatefulWidget {
-  const Admin_listview({super.key});
+class Admin_ListView extends StatefulWidget {
+  const Admin_ListView({super.key});
 
   @override
-  State<Admin_listview> createState() => _Admin_listviewState();
+  State<Admin_ListView> createState() => _Admin_ListViewState();
 }
 
-class _Admin_listviewState extends State<Admin_listview> {
+class _Admin_ListViewState extends State<Admin_ListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +49,7 @@ class _Admin_listviewState extends State<Admin_listview> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20.r),
                             topRight: Radius.circular(20.r))),
-                    height: 731.h,
+                    height: 660.h,
                     width: double.infinity,
                     child:Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

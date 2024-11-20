@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Admincomplaintview extends StatefulWidget {
-  const Admincomplaintview({super.key});
+class Admin_Complaintview extends StatefulWidget {
+  const Admin_Complaintview({super.key});
 
   @override
-  State<Admincomplaintview> createState() => _AdmincomplaintviewState();
+  State<Admin_Complaintview> createState() => _Admin_ComplaintviewState();
 }
 
-class _AdmincomplaintviewState extends State<Admincomplaintview> {
+class _Admin_ComplaintviewState extends State<Admin_Complaintview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
