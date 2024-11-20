@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/main.dart';
 
-class Admin_CustomerList extends StatefulWidget {
-  const Admin_CustomerList({super.key});
+class Admin_CustomersList extends StatefulWidget {
+  const Admin_CustomersList({super.key});
 
   @override
-  State<Admin_CustomerList> createState() => _Admin_CustomerListState();
+  State<Admin_CustomersList> createState() => _Admin_CustomersListState();
 }
 
-class _Admin_CustomerListState extends State<Admin_CustomerList> {
+class _Admin_CustomersListState extends State<Admin_CustomersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
