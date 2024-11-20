@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Approval_Page extends StatefulWidget {
-  const Approval_Page({super.key});
+class Rejected_Reason extends StatefulWidget {
+  const Rejected_Reason({super.key});
 
   @override
-  State<Approval_Page> createState() => _Approval_PageState();
+  State<Rejected_Reason> createState() => _Rejected_ReasonState();
 }
 
-class _Approval_PageState extends State<Approval_Page> {
+class _Rejected_ReasonState extends State<Rejected_Reason> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.black,
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Approval",
+              "Rejected",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
