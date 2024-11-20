@@ -6,9 +6,9 @@ import 'Admin/Admin_Workerlistview.dart';
 import 'Admin/Admin_feedbacklist.dart';
 import 'Admin/Admin_listview.dart';
 import 'Admin/Admin_workers.dart';
-import 'Admin/Adminaccrej.dart';
-import 'Admin/Admincomplaintlist.dart';
-import 'Admin/Admincomplaintview.dart';
+import 'Admin/Approval_Page.dart';
+import 'Admin/Transcation_Details.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Admin_listview(),
+        home:  Approval_Page(),
 
       ),
         designSize: Size(432, 864)
