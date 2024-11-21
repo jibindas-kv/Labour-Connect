@@ -18,7 +18,7 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              " Transcations \n Details",
+              "Transcation\n              Details",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -42,13 +42,14 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                       padding: const EdgeInsets.only(
                           bottom: 80, top: 50, left: 20, right: 20),
                       child: Container(
-                        height: 30,
+                        height: 40,
                         width: 20,
                         decoration: BoxDecoration(
                             color: Colors.grey.shade300,
                             borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           children: [
+                            SizedBox(height: 10.sp,),
                             Text(
                               " FROM CUSTOMER NAME",
                               style: TextStyle(
@@ -117,7 +118,7 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                       ),
                     )),
                 Padding(
-                  padding: const EdgeInsets.only(top: 230, left: 30),
+                  padding: const EdgeInsets.only(top: 230, left: 33),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
