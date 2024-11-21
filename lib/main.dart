@@ -6,7 +6,7 @@ import 'Admin/Admin_Login.dart';
 import 'Admin/Admin_Workerlistview.dart';
 import 'Admin/Admin_feedbacklist.dart';
 import 'Admin/Admin_listview.dart';
-import 'Admin/Rejected_Workers.dart';
+import 'Admin/Admin_Rejected_List.dart';
 import 'Admin/Approval_Page.dart';
 import 'Admin/Transcation_Details.dart';
 

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Approval_Page.dart';
 
-class Rejected_Workers extends StatefulWidget {
-  const Rejected_Workers({super.key});
+class Admin_Rejected_List extends StatefulWidget {
+  const Admin_Rejected_List({super.key});
 
   @override
-  State<Rejected_Workers> createState() => _Rejected_WorkersState();
+  State<Admin_Rejected_List> createState() => _Admin_Rejected_ListState();
 }
 
-class _Rejected_WorkersState extends State<Rejected_Workers> {
+class _Admin_Rejected_ListState extends State<Admin_Rejected_List> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
