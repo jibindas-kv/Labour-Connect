@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:labour_connect/Admin/Dashboard.dart';
-import 'Admin/Admin_Customer_List.dart';
+import 'Admin/Admin_CustomersList.dart';
 import 'Admin/Admin_Login.dart';
 import 'Admin/Admin_Workerlistview.dart';
 import 'Admin/Admin_feedbacklist.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Dashboard(),
+        home:  Approval_Page(),
 
       ),
         designSize: Size(432, 864)
