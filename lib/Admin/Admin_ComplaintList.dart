@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_ComplaintView.dart';
 
 class Admin_ComplaintList extends StatefulWidget {
   const Admin_ComplaintList({super.key});
@@ -38,28 +39,41 @@ class _Admin_ComplaintListState extends State<Admin_ComplaintList> {
                           topRight: Radius.circular(20.r))),
                   height: 731.h,
                   width: double.infinity,
-                  child: ListView.builder(
+                  child:ListView.builder(
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-                        child: Container(
-                          height: 50.h,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(9.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Customer Name",
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return Admin_Complaintview();},));
+                          },
+                          child: Container(
+                            height: 50.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Customer Name",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16.sp),
+                                  ),
+                                  Text(
+                                    "12/11/2024",
+                                    style: TextStyle(
+                                        color: Colors.grey[700], fontSize: 12.sp),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Date",
-                                style: TextStyle(color: Colors.grey[700]),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       );

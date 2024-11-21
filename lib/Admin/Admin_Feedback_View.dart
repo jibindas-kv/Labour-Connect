@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Admin_AccRej extends StatefulWidget {
-  const Admin_AccRej({super.key});
+class Admin_Feedback_View extends StatefulWidget {
+  const Admin_Feedback_View({super.key});
 
   @override
-  State<Admin_AccRej> createState() => _Admin_AccRejState();
+  State<Admin_Feedback_View> createState() => _Admin_Feedback_ViewState();
 }
 
-class _Admin_AccRejState extends State<Admin_AccRej> {
+class _Admin_Feedback_ViewState extends State<Admin_Feedback_View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

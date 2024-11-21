@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_Add_Notification.dart';
+import 'package:labour_connect/Admin/Admin_ComplaintList.dart';
+import 'package:labour_connect/Admin/Admin_FeedbackList.dart';
+import 'package:labour_connect/Admin/Admin_WorkerListView.dart';
+import 'package:labour_connect/Admin/Admin_Workers_Work_Add.dart';
+import 'package:labour_connect/Admin/Approval_Page.dart';
+import 'package:labour_connect/Admin/Rejected_Workers.dart';
 import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
@@ -161,27 +168,34 @@ class _DashboardState extends State<Dashboard> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 180.sp,
-                                  width: 180.sp,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.person_add_outlined,
-                                        size: 80.sp,
-                                      ),
-                                      Text(
-                                        "Approve",
-                                        style: TextStyle(
-                                            fontSize: 30.sp,
-                                            fontWeight: FontWeight.w900),
-                                      ),
-                                    ],
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return Admin_WorkerListView();
+                                    },));
+                                  },
+                                  child: Container(
+                                    height: 180.sp,
+                                    width: 180.sp,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(20.r),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.person_add_outlined,
+                                          size: 80.sp,
+                                        ),
+                                        Text(
+                                          "Approve",
+                                          style: TextStyle(
+                                              fontSize: 30.sp,
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -189,71 +203,85 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               height: 20.h,
                             ),
-                            Container(
-                              height: 60.sp,
-                              width: 450.sp,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Rejected Workers",
-                                          style: TextStyle(
-                                              fontSize: 23.sp,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                        Icon(
-                                          Icons.info_outline,size: 30.sp,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return Rejected_Workers();
+                                },));
+                              },
+                              child: Container(
+                                height: 60.sp,
+                                width: 450.sp,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Rejected Workers",
+                                            style: TextStyle(
+                                                fontSize: 23.sp,
+                                                fontWeight: FontWeight.w900),
+                                          ),
+                                          Icon(
+                                            Icons.info_outline,size: 30.sp,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
                               height: 20.h,
                             ),
-                            Container(
-                              height: 60.sp,
-                              width: 450.sp,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Works",
-                                          style: TextStyle(
-                                              fontSize: 23.sp,
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                        Icon(
-                                          Icons.note_add_outlined,size: 30.sp,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return Admin_Workers_Work_Add();
+                                },));
+                              },
+                              child: Container(
+                                height: 60.sp,
+                                width: 450.sp,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Works",
+                                            style: TextStyle(
+                                                fontSize: 23.sp,
+                                                fontWeight: FontWeight.w900),
+                                          ),
+                                          Icon(
+                                            Icons.note_add_outlined,size: 30.sp,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -264,85 +292,104 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Column(
                                   children: [
-                                    Container(
-                                      height: 80.sp,
-                                      width: 180.sp,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius:
-                                            BorderRadius.circular(20.r),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Feedback",
-                                            style: TextStyle(
-                                                fontSize: 30.sp,
-                                                fontWeight: FontWeight.w900),
-                                          )
-                                        ],
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                          return Admin_FeedbackList();
+                                        },));
+                                      },
+                                      child: Container(
+                                        height: 80.sp,
+                                        width: 180.sp,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Feedback",
+                                              style: TextStyle(
+                                                  fontSize: 30.sp,
+                                                  fontWeight: FontWeight.w900),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
                                       height: 20.h,
                                     ),
-                                    Container(
-                                      height: 80.sp,
-                                      width: 180.sp,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius:
-                                            BorderRadius.circular(20.r),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Complaints",
-                                            style: TextStyle(
-                                                fontSize: 28.sp,
-                                                fontWeight: FontWeight.w900),
-                                          )
-                                        ],
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                          return Admin_ComplaintList();},));
+                                      },
+                                      child: Container(
+                                        height: 80.sp,
+                                        width: 180.sp,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Complaints",
+                                              style: TextStyle(
+                                                  fontSize: 28.sp,
+                                                  fontWeight: FontWeight.w900),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Column(
                                   children: [
-                                    Container(
-                                      height: 170.sp,
-                                      width: 180.sp,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius:
-                                            BorderRadius.circular(20.r),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 10.sp,
-                                              ),
-                                              Icon(
-                                                Icons.notification_add_outlined,
-                                                size: 70.sp,
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            "Notification",
-                                            style: TextStyle(
-                                                fontSize: 30.sp,
-                                                fontWeight: FontWeight.w900),
-                                          )
-                                        ],
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                          return Admin_Add_Notification();},));
+                                      },
+                                      child: Container(
+                                        height: 170.sp,
+                                        width: 180.sp,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 10.sp,
+                                                ),
+                                                Icon(
+                                                  Icons.notification_add_outlined,
+                                                  size: 70.sp,
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              "Notification",
+                                              style: TextStyle(
+                                                  fontSize: 30.sp,
+                                                  fontWeight: FontWeight.w900),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],

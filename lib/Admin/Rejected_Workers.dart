@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:labour_connect/Admin/Admin_Feedback_View.dart';
+import 'package:labour_connect/Admin/Approval_Page.dart';
 
-class Admin_FeedbackList extends StatefulWidget {
-  const Admin_FeedbackList({super.key});
+class Rejected_Workers extends StatefulWidget {
+  const Rejected_Workers({super.key});
 
   @override
-  State<Admin_FeedbackList> createState() => _Admin_FeedbackListState();
+  State<Rejected_Workers> createState() => _Rejected_WorkersState();
 }
 
-class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
+class _Rejected_WorkersState extends State<Rejected_Workers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +19,7 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Feedbacks",
+              "Rejected",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -40,14 +40,18 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                   height: 731.h,
                   width: double.infinity,
                   child: ListView.builder(
+                    itemCount: 6,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, bottom: 10),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Admin_Feedback_View();},));
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return Approval_Page();
+                              },
+                            ));
                           },
                           child: Container(
                             height: 50.h,
@@ -56,12 +60,14 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                               borderRadius: BorderRadius.circular(20.r),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 15),
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 15),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Customer Name",
+                                    "Worker Name",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         fontSize: 16.sp),
@@ -69,7 +75,8 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                                   Text(
                                     "12/11/2024",
                                     style: TextStyle(
-                                        color: Colors.grey[700], fontSize: 12.sp),
+                                        color: Colors.grey[700],
+                                        fontSize: 12.sp),
                                   ),
                                 ],
                               ),
