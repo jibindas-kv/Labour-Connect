@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:labour_connect/Admin/Admin_ComplaintView.dart';
+
+import 'Admin_Complaintlist_View.dart';
 
 class Admin_ComplaintList extends StatefulWidget {
   const Admin_ComplaintList({super.key});
@@ -47,7 +48,7 @@ class _Admin_ComplaintListState extends State<Admin_ComplaintList> {
                         child: InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Admin_Complaintview();},));
+                              return Admin_Complainlist_View();},));
                           },
                           child: Container(
                             height: 50.h,

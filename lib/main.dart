@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:labour_connect/Admin/Dashboard.dart';
-
 import 'Admin/Admin_Login.dart';
 import 'Admin/Admin_Workerlistview.dart';
 import 'Admin/Admin_feedbacklist.dart';
-import 'Admin/Admin_listview.dart';
-import 'Admin/Admin_Rejected_List.dart';
+
 import 'Admin/Approval_Page.dart';
+import 'Admin/Rejected_Reason.dart';
 import 'Admin/Transcation_Details.dart';
 
 
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Dashboard(),
+        home:  Rejected_Reason(),
 
       ),
         designSize: Size(432, 864)
