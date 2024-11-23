@@ -7,6 +7,8 @@ import 'Admin/Admin_feedbacklist.dart';
 import 'Admin/Approval_Page.dart';
 import 'Admin/Rejected_Reason.dart';
 import 'Admin/Transcation_Details.dart';
+import 'Customer/Customer_Login.dart';
+import 'Customer/Customer_Signup.dart';
 
 
 void main() {
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Rejected_Reason(),
+        home:  Customer_Login(),
 
       ),
         designSize: Size(432, 864)
