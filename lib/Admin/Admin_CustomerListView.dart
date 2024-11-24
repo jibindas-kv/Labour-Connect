@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Transcation_Details.dart';
 import 'package:labour_connect/main.dart';
 
-class Admin_WorkerListView extends StatefulWidget {
-  const Admin_WorkerListView({super.key});
+class Admin_CustomerListView extends StatefulWidget {
+  const Admin_CustomerListView({super.key});
 
   @override
-  State<Admin_WorkerListView> createState() => _Admin_WorkerListViewState();
+  State<Admin_CustomerListView> createState() => _Admin_CustomerListViewState();
 }
 
-class _Admin_WorkerListViewState extends State<Admin_WorkerListView> {
+class _Admin_CustomerListViewState extends State<Admin_CustomerListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +18,8 @@ class _Admin_WorkerListViewState extends State<Admin_WorkerListView> {
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Icon(Icons.person_3_outlined,size: 70.sp,color: Colors.white,)
+            padding: const EdgeInsets.only(top: 40),
+            child: Icon(Icons.person,size: 70.sp,color: Colors.white,)
           ),
           Padding(
             padding: const EdgeInsets.only(top: 25),
@@ -114,29 +114,6 @@ class _Admin_WorkerListViewState extends State<Admin_WorkerListView> {
                               children: [
                                 Text(
                                   "Place",
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey.shade300,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  borderSide: BorderSide.none, // Removes border outline
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 15.sp),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Specialized Work",
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                               ],

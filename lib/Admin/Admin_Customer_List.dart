@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_CustomerListView.dart';
 import 'package:labour_connect/Admin/Transcation_Details.dart';
 import 'package:labour_connect/main.dart';
 
@@ -48,7 +49,7 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
                         child: InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Transcation_Details();},));
+                              return Admin_CustomerListView();},));
                           },
                           child: Container(
                             height: 50.h,

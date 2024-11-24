@@ -4,6 +4,7 @@ import 'package:labour_connect/Admin/Admin_Add_Notification.dart';
 import 'package:labour_connect/Admin/Admin_ComplaintList.dart';
 import 'package:labour_connect/Admin/Admin_FeedbackList.dart';
 import 'package:labour_connect/Admin/Admin_WorkerListView.dart';
+import 'package:labour_connect/Admin/Admin_Worker_Requests.dart';
 import 'package:labour_connect/Admin/Admin_Workers_Work_Add.dart';
 import 'package:labour_connect/Admin/Approval_Page.dart';
 import 'package:labour_connect/Admin/Admin_Rejected_List.dart';
@@ -171,7 +172,7 @@ class _DashboardState extends State<Dashboard> {
                                 InkWell(
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return Admin_WorkerListView();
+                                      return Admin_Worker_Requests();
                                     },));
                                   },
                                   child: Container(

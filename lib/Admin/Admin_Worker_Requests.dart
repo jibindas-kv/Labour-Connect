@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_WorkerListView.dart';
+import 'package:labour_connect/Admin/Approval_Page.dart';
 import 'package:labour_connect/Admin/Transcation_Details.dart';
 import 'package:labour_connect/main.dart';
 
-class Payments extends StatefulWidget {
-  const Payments({super.key});
+class Admin_Worker_Requests extends StatefulWidget {
+  const Admin_Worker_Requests({super.key});
 
   @override
-  State<Payments> createState() => _PaymentsState();
+  State<Admin_Worker_Requests> createState() => _Admin_Worker_RequestsState();
 }
 
-class _PaymentsState extends State<Payments> {
+class _Admin_Worker_RequestsState extends State<Admin_Worker_Requests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class _PaymentsState extends State<Payments> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Payments",
+              "Requests",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -41,6 +43,7 @@ class _PaymentsState extends State<Payments> {
                   height: 731.h,
                   width: double.infinity,
                   child: ListView.builder(
+                    itemCount: 8,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(
@@ -48,7 +51,7 @@ class _PaymentsState extends State<Payments> {
                         child: InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Transcation_Details();},));
+                              return Approval_Page();},));
                           },
                           child: Container(
                             height: 50.h,
@@ -62,7 +65,7 @@ class _PaymentsState extends State<Payments> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Customer Name",
+                                    "Worker Name",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         fontSize: 16.sp),
