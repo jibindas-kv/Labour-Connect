@@ -13,7 +13,14 @@ class _CustomerPaymentcompletedState extends State<CustomerPaymentcompleted> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 300,left: 140),
-        child: Icon(Icons.verified_outlined,color: Colors.black,size: 130,
+        child: Column(
+          children: [
+            Icon(Icons.verified_outlined,color: Colors.black,size: 130,
+            ),
+            Column(children: [
+              Text("Successful",style: TextStyle(color: Colors.black,fontSize: 18),)
+            ],)
+          ],
         ),
       ),
     );
