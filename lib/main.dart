@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_Add_Notifications.dart';
+import 'package:labour_connect/Customer/Customer_Home.dart';
+import 'package:labour_connect/Home.dart';
+import 'package:labour_connect/Worker/Worker_Notification.dart';
+import 'package:labour_connect/Worker/Worker_Work_Status.dart';
 import 'Admin/Admin_Login.dart';
 import 'Admin/Admin_Workerlistview.dart';
 import 'Admin/Admin_feedbacklist.dart';
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  CustomerPaymentcompleted(),
+        home:  Home(),
 
       ),
         designSize: Size(432, 864)

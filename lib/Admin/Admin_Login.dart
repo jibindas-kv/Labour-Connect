@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Dashboard.dart';
 
 class Admin_Login extends StatefulWidget {
   const Admin_Login({super.key});
@@ -13,6 +14,7 @@ class _Admin_LoginState extends State<Admin_Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -35,7 +37,6 @@ class _Admin_LoginState extends State<Admin_Login> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -46,7 +47,7 @@ class _Admin_LoginState extends State<Admin_Login> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 30.h),
               Padding(
                 padding: const EdgeInsets.only(right: 280),
                 child: Text(
@@ -54,7 +55,6 @@ class _Admin_LoginState extends State<Admin_Login> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -79,7 +79,7 @@ class _Admin_LoginState extends State<Admin_Login> {
                       "Forgot Password?",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.blue,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -89,7 +89,11 @@ class _Admin_LoginState extends State<Admin_Login> {
               SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return Dashboard();
+                    },));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -106,31 +110,7 @@ class _Admin_LoginState extends State<Admin_Login> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Do you have an account? ",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // Handle sign-up navigation here
-                      },
-                      child: Text(
-                        "Sign up",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              SizedBox(height: 10.h),
             ],
           ),
         ),

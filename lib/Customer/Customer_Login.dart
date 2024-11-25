@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Customer_Signup.dart';
 
 class Customer_Login extends StatefulWidget {
   const Customer_Login({super.key});
@@ -13,6 +14,7 @@ class _Customer_LoginState extends State<Customer_Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -35,7 +37,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
+
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -46,7 +48,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 30.h),
               Padding(
                 padding: const EdgeInsets.only(right: 280),
                 child: Text(
@@ -54,7 +56,6 @@ class _Customer_LoginState extends State<Customer_Login> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(
@@ -106,7 +107,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10.h),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -117,14 +118,16 @@ class _Customer_LoginState extends State<Customer_Login> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // Handle sign-up navigation here
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return Customer_Signup();
+                        },));
                       },
                       child: Text(
                         "Sign up",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          color: Colors.black,
                         ),
                       ),
                     ),

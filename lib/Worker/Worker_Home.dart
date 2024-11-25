@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:labour_connect/Admin/Admin_Add_Notification.dart';
+import 'package:labour_connect/Admin/Admin_Notification.dart';
 import 'package:labour_connect/Admin/Admin_ComplaintList.dart';
 import 'package:labour_connect/Admin/Admin_FeedbackList.dart';
 import 'package:labour_connect/Admin/Admin_WorkerListView.dart';
