@@ -13,6 +13,7 @@ import 'Customer/Customer_Notification.dart';
 import 'Customer/Customer_PaymentCompleted.dart';
 import 'Customer/Customer_Signup.dart';
 import 'Customer/Customer_Editprofile.dart';
+import 'Customer/Customer_work_failed.dart';
 
 
 void main() {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  CustomerPaymentcompleted(),
+        home:  Customer_WorkFailed(),
 
       ),
         designSize: Size(432, 864)
