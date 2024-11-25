@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Worker_Login extends StatefulWidget {
   const Worker_Login({super.key});
@@ -11,86 +10,125 @@ class Worker_Login extends StatefulWidget {
 }
 
 class _Worker_LoginState extends State<Worker_Login> {
-
-  final formkey = GlobalKey<FormState>(); //for validations
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
-      body: SingleChildScrollView(
-        child: Form(
-          key: formkey,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 180,
+              SizedBox(height: 180.h),
+              Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 50.sp,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 40.h),
               Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  children: [Row(
-                    children: [
-                      Text("Enter Username",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                    ],
+                padding: const EdgeInsets.only(right: 330),
+                child: Text(
+                  "Email",
+                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
                   ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Invalid credentials";
-                        }
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Padding(
+                padding: const EdgeInsets.only(right: 280),
+                child: Text(
+                  "Password",
+                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              // Forgot Password Link
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle forgot password action
+                    },
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 100,
+                    ),
+                  ),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Do you have an account? ",
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Handle sign-up navigation here
                       },
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          hintText: ("Username"),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          fillColor: Colors.white,
-                          filled: true),
+                      child: Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  children: [Row(
-                    children: [
-                      Text("Password",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) ;
-                        {
-                          return "Invalid password";
-                        }
-                      },
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.remove_red_eye),
-                          hintText: (" Enter Password"),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          fillColor: Colors.white,
-                          filled: true),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 60,
-                    width:250,
-                    decoration: BoxDecoration(
-                        color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-                    child: Center(child: Text("LOGIN",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
-                  )
-                ],
-              )
             ],
           ),
         ),
