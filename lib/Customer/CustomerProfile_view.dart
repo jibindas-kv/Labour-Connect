@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Customer_Editprofile.dart';
+import 'package:labour_connect/Customer/Customer_Login.dart';
 
-class Customer_Editprofile extends StatefulWidget {
-  const Customer_Editprofile({super.key});
+class Customer_Profile_View extends StatefulWidget {
+  const Customer_Profile_View({super.key});
 
   @override
-  State<Customer_Editprofile> createState() => _Customer_EditprofileState();
+  State<Customer_Profile_View> createState() => _Customer_Profile_ViewState();
 }
 
-class _Customer_EditprofileState extends State<Customer_Editprofile> {
+class _Customer_Profile_ViewState extends State<Customer_Profile_View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +22,26 @@ class _Customer_EditprofileState extends State<Customer_Editprofile> {
               padding: const EdgeInsets.only(top: 30,left: 20),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios,color: Colors.white,),
                   Padding(
-                    padding: const EdgeInsets.only(left: 330),
-                    child: Icon(Icons.edit_note_rounded,color: Colors.white,size: 33,),
+                    padding: const EdgeInsets.only(left: 360,top: 5),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return Customer_Edit_Profile();
+                          },));
+                        },
+                        child: Icon(Icons.edit_note_rounded,color: Colors.white,size: 33,)),
                   )
                 ],
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Icon(Icons.person_pin_sharp,color: Colors.white,size: 100.sp,)
+                padding: const EdgeInsets.only(top: 2),
+                child:  Container(height: 80.h,width: 80.w,decoration: BoxDecoration(
+                    color: Colors.red,
+                    image: DecorationImage(image: AssetImage("assets/Person.png"),fit: BoxFit.cover),
+
+                    borderRadius: BorderRadius.circular(100.r)),),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25),
@@ -159,8 +170,8 @@ class _Customer_EditprofileState extends State<Customer_Editprofile> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 140),
+                        SizedBox(height: 30.h,),
+                        Center(
                           child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,
@@ -174,7 +185,9 @@ class _Customer_EditprofileState extends State<Customer_Editprofile> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              // Logout action
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                return Customer_Login();
+                              },));
                             },
                           ),
                         ),

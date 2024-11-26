@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Customer_Home.dart';
 import 'package:labour_connect/Customer/Customer_Signup.dart';
 
 class Customer_Login extends StatefulWidget {
@@ -90,7 +91,11 @@ class _Customer_LoginState extends State<Customer_Login> {
               SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                      return Customer_Home();
+                    },));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -118,7 +123,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                           return Customer_Signup();
                         },));
                       },

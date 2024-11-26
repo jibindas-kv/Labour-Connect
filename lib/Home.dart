@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.only(top: 21),
                   child: Text(
-                    "abour",
+                    "ABOUR",
                     style: TextStyle(
                       fontSize: 45.sp,
                       color: Colors.black,
@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.only(top: 23),
                   child: Text(
-                    "onnect",
+                    "ONNECT",
                     style: TextStyle(
                       fontSize: 45.sp,
                       color: Colors.black,

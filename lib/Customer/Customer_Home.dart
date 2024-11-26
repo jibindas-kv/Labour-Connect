@@ -162,7 +162,7 @@ class _WorkersState extends State<Workers> {
               crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 10,left: 5,right: 5),
+              padding: const EdgeInsets.only(top: 18,left: 5,right: 5),
               child: Container(
                 height: 100,
                 width: 100,
@@ -228,7 +228,7 @@ class _StatusState extends State<Status> {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(
-                  left: 10, right: 10, top: 10),
+                  left: 10, right: 10, top: 18),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[300],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Dashboard.dart';
 
 class Approval_Page extends StatefulWidget {
   const Approval_Page({super.key});
@@ -16,14 +17,6 @@ class _Approval_PageState extends State<Approval_Page> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30,left: 20),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_back_ios,color: Colors.white,),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Text(
@@ -165,7 +158,9 @@ class _Approval_PageState extends State<Approval_Page> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                // Approve button action
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                  return Dashboard();
+                                },));
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),
@@ -176,7 +171,9 @@ class _Approval_PageState extends State<Approval_Page> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                // Reject button action
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                  return Dashboard();
+                                },));
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),

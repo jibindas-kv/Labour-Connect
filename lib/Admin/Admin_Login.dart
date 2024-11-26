@@ -90,7 +90,7 @@ class _Admin_LoginState extends State<Admin_Login> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                       return Dashboard();
                     },));
                   },

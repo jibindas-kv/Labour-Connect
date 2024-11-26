@@ -15,14 +15,7 @@ class _Customer_NotificationState extends State<Customer_Notification> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30,left: 20),
-            child: Row(
-              children: [
-                Icon(Icons.arrow_back_ios,color: Colors.white,),
-              ],
-            ),
-          ),
+
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
@@ -44,15 +37,73 @@ class _Customer_NotificationState extends State<Customer_Notification> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
                           topRight: Radius.circular(20.r))),
-                  height: 668.h,
+                  height: 731.h,
                   width: double.infinity,
-                  child:Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20),
-                      SizedBox(height: 8),
-                    ],
-                  ),
+                  child:ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(color: Colors.black,width: 2)),
+                          child: Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, top: 10, bottom: 10, right: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Notification 1",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "10:00",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.normal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        "Notification Content",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },),
                 ),
               ],
             ),

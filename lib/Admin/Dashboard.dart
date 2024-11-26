@@ -12,6 +12,8 @@ import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
 
+import 'Admin_Login.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -39,7 +41,11 @@ class _DashboardState extends State<Dashboard> {
                       size: 40.sp,
                     )),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                        return Admin_Login();
+                      },));
+                    },
                     icon: Icon(
                       Icons.exit_to_app,
                       color: Colors.white,

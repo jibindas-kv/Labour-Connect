@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Customer_Login.dart';
 
 class Customer_Signup extends StatefulWidget {
   const Customer_Signup({super.key});
@@ -12,6 +13,7 @@ class _Customer_SignupState extends State<Customer_Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -19,20 +21,21 @@ class _Customer_SignupState extends State<Customer_Signup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 80),
-              Text(
-                "Signup",
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Text(
+                  "Signup",
+                  style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20.h),
               Text(
                 "Name",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -43,12 +46,11 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Text(
                 "Email",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -59,12 +61,11 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Text(
                 "Phone number",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -75,12 +76,12 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Text(
                 "Place",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -91,12 +92,11 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20.h),
               Text(
                 "Address",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -107,12 +107,11 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20.h),
               Text(
                 "Password",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   filled: true,
@@ -123,10 +122,14 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 30.h),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                      return Customer_Login();
+                    },));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -143,7 +146,7 @@ class _Customer_SignupState extends State<Customer_Signup> {
                   ),
                 ),
               ),
-          SizedBox(height: 20),
+          SizedBox(height: 8.h),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -154,20 +157,26 @@ class _Customer_SignupState extends State<Customer_Signup> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Handle sign-in navigation here
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                      return Customer_Login();
+                    },));
                   },
                   child: Text(
                     "Sign in",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.black,
                     ),
                   ),
                 ),
               ],
             ),
-          )],
+
+          ),
+
+              SizedBox(height: 20.h),
+            ],
           ),
         ),
       ),
