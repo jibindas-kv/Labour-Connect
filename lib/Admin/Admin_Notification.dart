@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Admin/Admin_Add_Notifications.dart';
 
-class Admin_Add_Notification extends StatefulWidget {
-  const Admin_Add_Notification({super.key});
+class Admin_Notification extends StatefulWidget {
+  const Admin_Notification({super.key});
 
   @override
-  State<Admin_Add_Notification> createState() => _Admin_Add_NotificationState();
+  State<Admin_Notification> createState() => _Admin_NotificationState();
 }
 
-class _Admin_Add_NotificationState extends State<Admin_Add_Notification> {
+class _Admin_NotificationState extends State<Admin_Notification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,9 @@ class _Admin_Add_NotificationState extends State<Admin_Add_Notification> {
               color: Colors.white,
             ),
             onPressed: () {
-              print("Pressed");
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                return Admin_Add_Notifications();
+              },));
             },
           ),
         ),
