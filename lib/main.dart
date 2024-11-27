@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Home.dart';
 
+import 'Worker/Worker_Signup.dart';
 import 'firebase_options.dart';
 
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Home(),
+        home:  Worker_Signup(),
 
       ),
         designSize: Size(432, 864)
