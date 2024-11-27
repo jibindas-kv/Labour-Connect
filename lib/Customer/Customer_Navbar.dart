@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/About_Us.dart';
+import 'package:labour_connect/Customer/Contact_Us.dart';
 import 'package:labour_connect/Customer/CustomerProfile_view.dart';
 import 'package:labour_connect/Customer/Customer_Login.dart';
 import 'package:labour_connect/Customer/Customer_Notification.dart';
+import 'package:labour_connect/Customer/FAQ.dart';
 
 class Customer_Navbar extends StatelessWidget {
   const Customer_Navbar({super.key});
@@ -77,7 +80,11 @@ class Customer_Navbar extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20.sp)),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return FAQ();
+              },));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -90,7 +97,11 @@ class Customer_Navbar extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20.sp)),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return About_Us();
+              },));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -103,7 +114,11 @@ class Customer_Navbar extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20.sp)),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ContactUs();
+              },));
+            },
           ),
           SizedBox(
             height: 300.h,

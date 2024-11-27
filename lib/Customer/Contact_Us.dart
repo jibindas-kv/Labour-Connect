@@ -15,7 +15,7 @@ class _ContactUsState extends State<ContactUs> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 70),
+        padding: const EdgeInsets.only(left: 20, top: 50),
         child: Column(
           children: [
             Row(
@@ -30,7 +30,7 @@ class _ContactUsState extends State<ContactUs> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 40),
               child: Row(
                 children: [
                   Text(

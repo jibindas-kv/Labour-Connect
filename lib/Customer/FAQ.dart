@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Contact_Us.dart';
 
 class FAQ extends StatefulWidget {
   const FAQ({super.key});
@@ -12,8 +13,9 @@ class _FAQState extends State<FAQ> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         children:  [
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -124,7 +126,9 @@ class _FAQState extends State<FAQ> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Handle sign-in navigation here
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                              return ContactUs();
+                            },));
                           },
                           child: Text(
                             "Contact Us",
