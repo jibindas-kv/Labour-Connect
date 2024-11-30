@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Worker/Worker_Login.dart';
 
 class Worker_Signup extends StatefulWidget {
   const Worker_Signup({super.key});
@@ -8,7 +9,10 @@ class Worker_Signup extends StatefulWidget {
   State<Worker_Signup> createState() => _Worker_SignupState();
 }
 
+
 class _Worker_SignupState extends State<Worker_Signup> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   @override
   final List<String> _works = [
     'Plumbing',
@@ -19,6 +23,18 @@ class _Worker_SignupState extends State<Worker_Signup> {
     'Washing',
     'Select'
   ];
+
+
+
+  String Name = "";
+  String Email = "";
+  String Phonenumber = "";
+  String Place = "";
+  String Address = "";
+  String SpecializedWork = "";
+  String Password = "";
+
+  final formKey = GlobalKey<FormState>();
 
   String Work = 'Select';
   Widget build(BuildContext context) {
@@ -57,7 +73,14 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
               ),
+
               SizedBox(height: 15.sp),
               Text(
                 "Email",
@@ -72,6 +95,14 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$').hasMatch(value)) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15.sp),
               Text(
@@ -87,6 +118,14 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                    return 'Please enter a valid 10-digit phone number';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15.sp),
               Text(
@@ -102,6 +141,12 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your place';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15.sp),
               Text(
@@ -117,6 +162,12 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your address';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 15.sp),
               Text(
@@ -176,6 +227,14 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     borderSide: BorderSide.none,
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  } else if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+                  return null;
+                },
               ),
               SizedBox(height: 30.h),
               Center(
@@ -191,9 +250,16 @@ class _Worker_SignupState extends State<Worker_Signup> {
                       horizontal: 100,
                     ),
                   ),
-                  child: Text(
-                    "Signup",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, DialogRoute(context: context, builder: (context) {
+                        return Worker_Login();
+                      },));
+                    },
+                    child: Text(
+                      "Signup",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
                   ),
                 ),
               ),
