@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Customer/Customer_Login.dart';
@@ -10,6 +11,27 @@ class Customer_Signup extends StatefulWidget {
 }
 
 class _Customer_SignupState extends State<Customer_Signup> {
+
+
+
+  String Name = "";
+  String Phn_no = "";
+  String Email = "";
+  String Password = "";
+
+  final _formKey = GlobalKey<FormState>();
+
+  // Email RegExp
+  final RegExp emailRegExp =
+  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+  // Phone number RegExp (this one expects a 10-digit number)
+  final RegExp phoneRegExp = RegExp(r'^\d{10}$');
+
+  // Password RegExp (at least 6 characters in this example)
+  final RegExp passwordRegExp = RegExp(r'^.{6,}$');
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
