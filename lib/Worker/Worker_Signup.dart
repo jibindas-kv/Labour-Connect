@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Worker/Worker_Login.dart';
@@ -13,6 +15,33 @@ class Worker_Signup extends StatefulWidget {
 class _Worker_SignupState extends State<Worker_Signup> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+
+  void workerlogin() async {
+    if (formKey.currentState!.validate()) {
+      try {
+        UserCredential userCredential =
+        await _auth.createUserWithEmailAndPassword(
+          email: Email,
+          password: Password,
+        );
+
+        await _firestore.collection('WorkerLogin').doc(userCredential.user!.uid).set({
+          'Name': Name,
+          'Email': Email,
+        });
+
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return Worker_Login();
+          },
+        ));
+      } catch (e) {
+        print("Registration Error: $e");
+      }
+    }
+  }
+
+
   @override
   final List<String> _works = [
     'Plumbing',
@@ -23,9 +52,6 @@ class _Worker_SignupState extends State<Worker_Signup> {
     'Washing',
     'Select'
   ];
-
-
-
   String Name = "";
   String Email = "";
   String Phonenumber = "";
@@ -251,10 +277,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     ),
                   ),
                   child: InkWell(
-                    onTap: () {
-                      Navigator.push(context, DialogRoute(context: context, builder: (context) {
-                        return Worker_Login();
-                      },));
+                    onTap:  () {
+
                     },
                     child: Text(
                       "Signup",
@@ -274,7 +298,7 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     ),
                     InkWell(
                       onTap: () {
-                        // Handle sign-in navigation here
+                        workerlogin();
                       },
                       child: Text(
                         "Sign in",
