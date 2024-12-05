@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Worker/Worker_Home.dart';
 
 class Worker_Login extends StatefulWidget {
   const Worker_Login({super.key});
@@ -9,9 +12,46 @@ class Worker_Login extends StatefulWidget {
   State<Worker_Login> createState() => _Worker_LoginState();
 }
 class _Worker_LoginState extends State<Worker_Login> {
+  String Email = '', Password = '';
+  Future<void> _saveUserDataToFirestore(User user) async {
+    final DocumentSnapshot userDoc =
+    await _firestore.collection("WorkerLogin").doc(user.uid).get();
+
+    if (!userDoc.exists) {
+      await _firestore.collection("WorkerLogin").doc(user.uid).set({
+        'Name': user.displayName,
+        'Email': user.email,
+        'Phn_no': "",
+        // Add additional fields like "Trade" and "OfficeLocation" if required
+      });
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+
+  void loginWorker() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: Email,
+          password: Password,
+        );
+
+        if (userCredential.user != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Worker_Home();
+          },));
+        }
+      } catch (e) {
+        print("Login Error: $e");
+      }
+    }
+  }
+
+  final RegExp emailRegExp =
+  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +82,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                   ),
                 ),
                 TextFormField(
-                  controller: _emailController,
+                  onChanged: (value) => Email=value,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade300,
@@ -70,7 +110,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                   ),
                 ),
                 TextFormField(
-                  controller: _passwordController,
+                  onChanged: (value) => Password=value,
                   obscureText: true,
                   decoration: InputDecoration(
                     filled: true,
@@ -113,7 +153,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // If the form is valid, handle the login logic here
+                        loginWorker();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Logging in...')),
                         );
@@ -146,7 +186,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Handle sign-up navigation here
+                          loginWorker();
                         },
                         child: Text(
                           "Sign up",
@@ -160,6 +200,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),

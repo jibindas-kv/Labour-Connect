@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Admin_Notification.dart';
@@ -11,6 +13,7 @@ import 'package:labour_connect/Admin/Admin_Rejected_List.dart';
 import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
+import 'package:labour_connect/Worker/Authgate.dart';
 
 class Worker_Home extends StatefulWidget {
   const Worker_Home({super.key});
@@ -20,6 +23,7 @@ class Worker_Home extends StatefulWidget {
 }
 
 class _Worker_HomeState extends State<Worker_Home> {
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -42,7 +46,14 @@ class _Worker_HomeState extends State<Worker_Home> {
                         size: 40.sp,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _auth.signOut();
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return Authgate();
+                          },
+                        ));
+                      },
                       icon: Icon(
                         Icons.exit_to_app,
                         color: Colors.white,
