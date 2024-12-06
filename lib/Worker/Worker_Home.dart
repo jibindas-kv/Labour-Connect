@@ -13,7 +13,7 @@ import 'package:labour_connect/Admin/Admin_Rejected_List.dart';
 import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
-import 'package:labour_connect/Worker/Authgate.dart';
+import 'package:labour_connect/Worker/Worker_Authgate.dart';
 
 class Worker_Home extends StatefulWidget {
   const Worker_Home({super.key});
@@ -50,7 +50,7 @@ class _Worker_HomeState extends State<Worker_Home> {
                         await _auth.signOut();
                         Navigator.pushReplacement(context, MaterialPageRoute(
                           builder: (context) {
-                            return Authgate();
+                            return Worker_Authgate();
                           },
                         ));
                       },

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  Worker_Signup(),
+        home:  Home(),
 
       ),
         designSize: Size(432, 864)

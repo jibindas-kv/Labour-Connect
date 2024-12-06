@@ -34,6 +34,7 @@ class _Worker_SignupState extends State<Worker_Signup> {
           'Place': Place,
           'Address': Address,
           'SpecializedWork': SpecializedWork,
+          "Role":"Worker"
         });
 
         Navigator.push(context, MaterialPageRoute(

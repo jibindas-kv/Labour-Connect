@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Worker/Worker_Home.dart';
+import 'package:labour_connect/Worker/Worker_Signup.dart';
 
 class Worker_Login extends StatefulWidget {
   const Worker_Login({super.key});
@@ -11,61 +11,105 @@ class Worker_Login extends StatefulWidget {
   @override
   State<Worker_Login> createState() => _Worker_LoginState();
 }
+
 class _Worker_LoginState extends State<Worker_Login> {
-  String Email = '', Password = '';
-  Future<void> _saveUserDataToFirestore(User user) async {
-    final DocumentSnapshot userDoc =
-    await _firestore.collection("WorkerLogin").doc(user.uid).get();
+  String email = '', password = '';
+  final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
-    if (!userDoc.exists) {
-      await _firestore.collection("WorkerLogin").doc(user.uid).set({
-        'Name': user.displayName,
-        'Email': user.email,
-        'Phn_no': "",
-        // Add additional fields like "Trade" and "OfficeLocation" if required
-      });
-    }
-  }
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
-  final _formKey = GlobalKey<FormState>();
-
+  // Worker login function after checking role in Firestore first
   void loginWorker() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: Email,
-          password: Password,
-        );
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true; // Start loading state
+      });
 
-        if (userCredential.user != null) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Worker_Home();
-          },));
+      try {
+        // Fetch the user document from Firestore first
+        QuerySnapshot userSnapshot = await _firestore
+            .collection('WorkerLogin') // Ensure this is the correct collection
+            .where('Email', isEqualTo: email)
+            .limit(1) // Limit to 1 result
+            .get();
+
+        if (userSnapshot.docs.isEmpty) {
+          // No user document found with this email
+          _showErrorDialog("No worker record found with this email.");
+        } else {
+          // Get user document and verify role
+          DocumentSnapshot userDoc = userSnapshot.docs.first;
+          String role = userDoc.get('Role');
+
+          // Verify if the user is a Worker
+          if (role == 'Worker') {
+            // Now authenticate the user with Firebase
+            try {
+              UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+                email: email,
+                password: password,
+              );
+
+              // Navigate to Worker Home page if login is successful
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Worker_Home(),
+                ),
+              );
+            } catch (e) {
+              _showErrorDialog("Login failed. Please check your credentials.");
+            }
+          } else {
+            // Role mismatch, show error and sign out
+            _showErrorDialog("This account is not registered as a Worker.");
+          }
         }
       } catch (e) {
-        print("Login Error: $e");
+        // Catch Firestore or other errors
+        _showErrorDialog("An error occurred. Please try again.");
+        print("Error: $e");
+      } finally {
+        setState(() {
+          isLoading = false; // Stop loading state
+        });
       }
     }
   }
 
-  final RegExp emailRegExp =
-  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // Error dialog to display errors
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Error"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: [
                 SizedBox(height: 180.h),
                 Text(
-                  "Login",
+                  "Worker Login",
                   style: TextStyle(
                     fontSize: 50.sp,
                     color: Colors.black,
@@ -77,12 +121,11 @@ class _Worker_LoginState extends State<Worker_Login> {
                   padding: const EdgeInsets.only(right: 330),
                   child: Text(
                     "Email",
-                    style:
-                    TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                   ),
                 ),
                 TextFormField(
-                  onChanged: (value) => Email=value,
+                  onChanged: (value) => email = value,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade300,
@@ -105,12 +148,11 @@ class _Worker_LoginState extends State<Worker_Login> {
                   padding: const EdgeInsets.only(right: 280),
                   child: Text(
                     "Password",
-                    style:
-                    TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                   ),
                 ),
                 TextFormField(
-                  onChanged: (value) => Password=value,
+                  onChanged: (value) => password = value,
                   obscureText: true,
                   decoration: InputDecoration(
                     filled: true,
@@ -148,17 +190,10 @@ class _Worker_LoginState extends State<Worker_Login> {
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        loginWorker();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Logging in...')),
-                        );
-                      }
-                    },
+                    onPressed: loginWorker,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -169,7 +204,11 @@ class _Worker_LoginState extends State<Worker_Login> {
                         horizontal: 100,
                       ),
                     ),
-                    child: Text(
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                        : Text(
                       "Login",
                       style: TextStyle(fontSize: 20.sp, color: Colors.white),
                     ),
@@ -181,12 +220,17 @@ class _Worker_LoginState extends State<Worker_Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Do you have an account? ",
+                        "Don't have an account? ",
                         style: TextStyle(fontSize: 14.sp),
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
-                          loginWorker();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Worker_Signup(), // Replace with your signup screen
+                            ),
+                          );
                         },
                         child: Text(
                           "Sign up",
@@ -200,7 +244,6 @@ class _Worker_LoginState extends State<Worker_Login> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

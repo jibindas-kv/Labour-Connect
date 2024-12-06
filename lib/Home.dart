@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Admin_Add_Notifications.dart';
 import 'package:labour_connect/Admin/Admin_Login.dart';
+import 'package:labour_connect/Customer/Customer_Authgate.dart';
 import 'package:labour_connect/Customer/Customer_Login.dart';
+import 'package:labour_connect/Worker/Worker_Authgate.dart';
 import 'package:labour_connect/Worker/Worker_Login.dart';
 
 class Home extends StatefulWidget {
@@ -125,7 +127,7 @@ class _HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Customer_Login();
+                        return Customer_Authgate();
                       },));
                     },
                     child: Container(
@@ -166,7 +168,7 @@ class _HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Worker_Login();
+                        return Worker_Authgate();
                       },));
                     },
                     child: Container(
