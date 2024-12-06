@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Admin_Notification.dart';
@@ -11,6 +12,7 @@ import 'package:labour_connect/Admin/Admin_Rejected_List.dart';
 import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
+import 'package:labour_connect/Worker/Worker_Authgate.dart';
 
 import 'Admin_Login.dart';
 
@@ -22,6 +24,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +44,13 @@ class _DashboardState extends State<Dashboard> {
                       size: 40.sp,
                     )),
                 IconButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                        return Admin_Login();
-                      },));
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Worker_Authgate();
+                        },
+                      ));
                     },
                     icon: Icon(
                       Icons.exit_to_app,

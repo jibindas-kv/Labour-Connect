@@ -115,7 +115,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                     SizedBox(height: 200.h),
                     Center(
                       child: Text(
-                        "Login",
+                        "Customer Login",
                         style: TextStyle(
                           fontSize: 50.sp,
                           fontWeight: FontWeight.bold,

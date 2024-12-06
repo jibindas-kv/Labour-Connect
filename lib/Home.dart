@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Admin_Add_Notifications.dart';
+import 'package:labour_connect/Admin/Admin_Authgate.dart';
 import 'package:labour_connect/Admin/Admin_Login.dart';
 import 'package:labour_connect/Customer/Customer_Authgate.dart';
 import 'package:labour_connect/Customer/Customer_Login.dart';
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
                   InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Admin_Login();
+                        return Admin_Authgate();
                       },));
                     },
                     child: Container(
