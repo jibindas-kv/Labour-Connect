@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:labour_connect/Customer/About_Us.dart';
 import 'package:labour_connect/Customer/Contact_Us.dart';
 import 'package:labour_connect/Customer/CustomerProfile_view.dart';
@@ -8,8 +10,43 @@ import 'package:labour_connect/Customer/Customer_Authgate.dart';
 import 'package:labour_connect/Customer/Customer_Notification.dart';
 import 'package:labour_connect/Customer/FAQ.dart';
 
-class Customer_Navbar extends StatelessWidget {
+class Customer_Navbar extends StatefulWidget {
   const Customer_Navbar({super.key});
+
+  @override
+  State<Customer_Navbar> createState() => _Customer_NavbarState();
+}
+
+class _Customer_NavbarState extends State<Customer_Navbar> {
+  String? id;
+  DocumentSnapshot? profile;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("Customer_id");
+    if (userId != null) {
+      setState(() {
+        id = userId;
+        print(id);
+      });
+
+      // Fetch profile data from Firestore
+      DocumentSnapshot userProfile = await FirebaseFirestore.instance
+          .collection("CustomerLogin")
+          .doc(userId)
+          .get();
+
+      setState(() {
+        profile = userProfile;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +64,14 @@ class Customer_Navbar extends StatelessWidget {
               ),
             ),
             accountName: Text(
-              "Name",
+              profile?['Name'] ?? "Name",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w900,
               ),
             ),
             accountEmail: Text(
-              "emailaddress@gmail.com",
+              profile?['Email'] ?? "emailaddress@gmail.com",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -46,138 +83,64 @@ class Customer_Navbar extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.person_outline_sharp,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   Profile",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          _buildListTile(
+            icon: Icons.person_outline_sharp,
+            label: "Profile",
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
                 return Customer_Profile_View();
-              }));
-            },
+              },
+            )),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.notifications_active_outlined,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   Notifications",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          _buildListTile(
+            icon: Icons.notifications_active_outlined,
+            label: "Notifications",
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
                 return Customer_Notification();
-              }));
-            },
+              },
+            )),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.question_answer_outlined,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   FAQ",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          _buildListTile(
+            icon: Icons.question_answer_outlined,
+            label: "FAQ",
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
                 return FAQ();
-              }));
-            },
+              },
+            )),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.info_outline_rounded,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   About",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          _buildListTile(
+            icon: Icons.info_outline_rounded,
+            label: "About",
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
                 return About_Us();
-              }));
-            },
+              },
+            )),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.connect_without_contact,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   Contact Us",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          _buildListTile(
+            icon: Icons.connect_without_contact,
+            label: "Contact Us",
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
                 return ContactUs();
-              }));
-            },
+              },
+            )),
           ),
-          SizedBox(
-            height: 300.h,
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.login_outlined,
-              color: Colors.white,
-              size: 25.sp,
-            ),
-            title: Text(
-              "   SignOut",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-            ),
+          SizedBox(height: 300.h),
+          _buildListTile(
+            icon: Icons.login_outlined,
+            label: "SignOut",
             onTap: () async {
               try {
-                // Sign out the current user
                 await FirebaseAuth.instance.signOut();
-                // Navigate to the authentication gate after signing out
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return Customer_Authgate();
-                    },
-                  ),
-                );
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) {
+                    return Customer_Authgate();
+                  },
+                ));
               } catch (e) {
-                // Handle any errors during sign-out
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Sign-out failed: $e'),
@@ -189,6 +152,29 @@ class Customer_Navbar extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  ListTile _buildListTile({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: Colors.white,
+        size: 25.sp,
+      ),
+      title: Text(
+        "   $label",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 20.sp,
+        ),
+      ),
+      onTap: onTap,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Customer/Customer_Navbar.dart';
@@ -132,6 +133,8 @@ class _Customer_HomeState extends State<Customer_Home> {
   }
 }
 
+
+
 class Workers extends StatefulWidget {
   const Workers({super.key});
 
@@ -140,64 +143,121 @@ class Workers extends StatefulWidget {
 }
 
 class _WorkersState extends State<Workers> {
+  // Fetch workers data from Firebase
+  Future<List<Map<String, dynamic>>> fetchWorkers() async {
+    final querySnapshot =
+    await FirebaseFirestore.instance.collection('WorkerLogin').get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: GridView.builder(
-          itemCount: 5,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, crossAxisSpacing: 4.0, mainAxisSpacing: 4.0),
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 18,left: 5,right: 5),
-              child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(15.r)),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 50.h,
-                        width: 50.w,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: AssetImage("assets/Worker.png"),fit: BoxFit.cover),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6.r)),
-                      ),
-                      Text(
-                        "Name",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Preffered Work",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Place",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      Text("Online",style: TextStyle(color: Colors.green,fontWeight: FontWeight.w900),)
-                    ],
-                  ),
-                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: fetchWorkers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.red, fontSize: 18.sp),
               ),
             );
-          },
-        ),
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                'No workers found',
+                style: TextStyle(fontSize: 18.sp),
+              ),
+            );
+          }
+
+          final workers = snapshot.data!;
+
+          return GridView.builder(
+            itemCount: workers.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+            ),
+            itemBuilder: (context, index) {
+              final worker = workers[index];
+              return Padding(
+                padding: const EdgeInsets.only(top: 18, left: 5, right: 5),
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 50.h,
+                          width: 50.w,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/Worker.png"),
+                              fit: BoxFit.cover,
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                        ),
+                        SizedBox(height: 2.h,),
+                        Text(
+                          worker['Name'] ?? 'Unknown',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          worker['SpecializedWork'] ?? 'N/A',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          worker['Place'] ?? 'N/A',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          worker['isOnline'] == true ? "Online" : "Offline",
+                          style: TextStyle(
+                            color: worker['isOnline'] == true
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
+
 
 class Status extends StatefulWidget {
   const Status({super.key});
@@ -209,75 +269,73 @@ class Status extends StatefulWidget {
 class _StatusState extends State<Status> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(
-                  left: 10, right: 10, top: 18),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 20,top: 10,bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Name Of Worker",
-                            style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Date",
-                            style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Time",
-                            style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Requested Work",
-                            style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            height: 30.h,
-                            width: 100.w,
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(15.r)),
-                            child: Center(
-                                child: Text(
-                                  "Pay",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                      fontWeight: FontWeight.bold, fontSize: 16.sp),
-                                )),
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(
+                left: 10, right: 10, top: 18),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(20.r),
               ),
-            );
-          },
-        ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 20,top: 10,bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name Of Worker",
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Date",
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Time",
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Requested Work",
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 30.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          child: Center(
+                              child: Text(
+                                "Pay",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                    fontWeight: FontWeight.bold, fontSize: 16.sp),
+                              )),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Customer/Customer_Home.dart';
 import 'package:labour_connect/Customer/Customer_Signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Customer_Login extends StatefulWidget {
   const Customer_Login({super.key});
@@ -18,6 +19,7 @@ class _Customer_LoginState extends State<Customer_Login> {
 
   String email = "";
   String password = "";
+  String id = "";
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
@@ -31,10 +33,19 @@ class _Customer_LoginState extends State<Customer_Login> {
 
       try {
         QuerySnapshot userSnapshot = await _firestore
-            .collection('CustomerLogin') // Ensure this is the correct collection name
+            .collection(
+                'CustomerLogin') // Ensure this is the correct collection name
             .where('Email', isEqualTo: email)
             .limit(1) // Limit to 1 result
             .get();
+        if (userSnapshot.docs.isNotEmpty) {
+          id = userSnapshot.docs[0].id;
+          SharedPreferences data = await SharedPreferences.getInstance();
+          data.setString('Customer_id', id);
+          print("///////////////////////////////////////");
+          print(id);
+          print("///////////////////////////////////////");
+        }
 
         if (userSnapshot.docs.isEmpty) {
           // No user document found with this email
@@ -48,7 +59,8 @@ class _Customer_LoginState extends State<Customer_Login> {
           if (role == 'customer') {
             // Now authenticate the user with Firebase
             try {
-              UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+              UserCredential userCredential =
+                  await _auth.signInWithEmailAndPassword(
                 email: email,
                 password: password,
               );
@@ -125,7 +137,8 @@ class _Customer_LoginState extends State<Customer_Login> {
                     SizedBox(height: 40.h),
                     Text(
                       "Email",
-                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
                     TextFormField(
                       onChanged: (value) => email = value,
@@ -150,7 +163,8 @@ class _Customer_LoginState extends State<Customer_Login> {
                     SizedBox(height: 20.h),
                     Text(
                       "Password",
-                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
                     TextFormField(
                       onChanged: (value) => password = value,
@@ -189,9 +203,10 @@ class _Customer_LoginState extends State<Customer_Login> {
                         child: isLoading
                             ? CircularProgressIndicator(color: Colors.white)
                             : Text(
-                          "Login",
-                          style: TextStyle(fontSize: 18.sp, color: Colors.white),
-                        ),
+                                "Login",
+                                style: TextStyle(
+                                    fontSize: 18.sp, color: Colors.white),
+                              ),
                       ),
                     ),
                     SizedBox(height: 20.h),
