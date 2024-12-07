@@ -14,6 +14,7 @@ import 'package:labour_connect/Admin/Payments.dart';
 import 'package:labour_connect/Admin/Admin_Worker_List.dart';
 import 'package:labour_connect/Admin/Admin_Customer_List.dart';
 import 'package:labour_connect/Worker/Worker_Authgate.dart';
+import 'package:labour_connect/Worker/Worker_Profile.dart';
 
 class Worker_Home extends StatefulWidget {
   const Worker_Home({super.key});
@@ -39,9 +40,13 @@ class _Worker_HomeState extends State<Worker_Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return Worker_Profile();
+                        },));
+                      },
                       icon: Icon(
-                        Icons.admin_panel_settings_outlined,
+                        Icons.person_outline_sharp,
                         color: Colors.white,
                         size: 40.sp,
                       )),

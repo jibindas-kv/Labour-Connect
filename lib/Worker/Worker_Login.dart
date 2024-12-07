@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Worker/Worker_Home.dart';
 import 'package:labour_connect/Worker/Worker_Signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Worker_Login extends StatefulWidget {
   const Worker_Login({super.key});
@@ -14,6 +15,7 @@ class Worker_Login extends StatefulWidget {
 
 class _Worker_LoginState extends State<Worker_Login> {
   String email = '', password = '';
+  String id = "";
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -34,6 +36,14 @@ class _Worker_LoginState extends State<Worker_Login> {
             .where('Email', isEqualTo: email)
             .limit(1) // Limit to 1 result
             .get();
+        if (userSnapshot.docs.isNotEmpty) {
+          id = userSnapshot.docs[0].id;
+          SharedPreferences data = await SharedPreferences.getInstance();
+          data.setString('Worker_id', id);
+          print("///////////////////////////////////////");
+          print(id);
+          print("///////////////////////////////////////");
+        }
 
         if (userSnapshot.docs.isEmpty) {
           // No user document found with this email
