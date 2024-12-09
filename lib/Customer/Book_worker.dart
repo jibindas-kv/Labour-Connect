@@ -1,15 +1,88 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Book_Worker extends StatefulWidget {
-  const Book_Worker({super.key});
+const Book_Worker({super.key,
+  required this.Worker_id,
+  required this.Name,
+  required this.phn_no,
+  required this.SpecializedWork,
+  required this.Address});
+ final Worker_id;
+ final Name;
+ final phn_no;
+ final SpecializedWork;
+ final Address;
 
   @override
   State<Book_Worker> createState() => _Book_WorkerState();
 }
 
 class _Book_WorkerState extends State<Book_Worker> {
+  String? Customer_name;
   @override
+  void initState(){
+    super.initState();
+    Get_Customer();
+  }
+
+  String? Customer_id;
+  String?Customer_user_name;
+  String? Customer_PhoneNo;
+  String? SpecializedWork;
+  String? Address;
+
+  Future<void> Get_Customer() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? Customerid = await preferences.getString('Customer_id');
+    DocumentSnapshot Customer_details = await FirebaseFirestore.instance
+        .collection('CustomerLogin')
+        .doc(Customerid)
+        .get();
+
+    if (Customer_details.exists){
+      setState(() {
+        Customer_user_name = Customer_details['Name'];
+        Customer_PhoneNo = Customer_details['Phonenumber'];
+        SpecializedWork = Customer_details['SpecializedWork'];
+        Customer_id = Customerid;
+        Address= Customer_details['Address'];
+      });
+      print(Customer_user_name);
+      print(Customer_id);
+      print(Customer_PhoneNo);
+      print(SpecializedWork);
+      print(Address);
+    }
+  }
+  String Date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  String Time = DateFormat('kk:mm').format(DateTime.now());
+  var Location_ctrl = TextEditingController();
+
+  Future<void>Customer_request()async{
+    FirebaseFirestore.instance.collection("Customer_request").add({
+      "Location": Location_ctrl.text,
+      "Date": Date,
+      "Time": Time,
+      "Address":Address,
+      "Worker_id": widget.Worker_id,
+      "Worker_Name": widget.Name,
+      "SpecializedWork": SpecializedWork,
+      "Customer_id": Customer_id,
+      "Customer_user_name": Customer_user_name,
+      "Customer_PhoneNo": Customer_PhoneNo,
+      "Amount": 0,
+      "Payment": 0,
+      "Worker_status": 0,
+      "Reject_reason":"Rejected",
+    });
+    print("Data Added Successfully/////////////////");
+  }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -83,13 +156,13 @@ class _Book_WorkerState extends State<Book_Worker> {
                                     CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Worker Name',
+                                        "${widget.Name}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        'Preferred Work',
+                                        '${widget.SpecializedWork}',
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ],
