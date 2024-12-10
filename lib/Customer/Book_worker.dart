@@ -5,84 +5,93 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Book_Worker extends StatefulWidget {
-const Book_Worker({super.key,
-  required this.Worker_id,
-  required this.Name,
-  required this.phn_no,
-  required this.SpecializedWork,
-  required this.Address});
- final Worker_id;
- final Name;
- final phn_no;
- final SpecializedWork;
- final Address;
+  const Book_Worker({
+    super.key,
+    required this.Worker_id,
+    required this.Name,
+    required this.phn_no,
+    required this.SpecializedWork,
+    required this.Address,
+  });
+  final Worker_id;
+  final Name;
+  final phn_no;
+  final SpecializedWork;
+  final Address;
 
   @override
   State<Book_Worker> createState() => _Book_WorkerState();
 }
 
 class _Book_WorkerState extends State<Book_Worker> {
-  String? Customer_name;
+  // Controllers for TextFormField widgets
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController serviceController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController workDescriptionController =
+  TextEditingController();
+
+  String? customerName;
+  String? customerId;
+  String? customerUserName;
+  String? customerPhoneNo;
+  String? specializedWork;
+  String? address;
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Get_Customer();
+    getCustomer();
   }
 
-  String? Customer_id;
-  String?Customer_user_name;
-  String? Customer_PhoneNo;
-  String? SpecializedWork;
-  String? Address;
-
-  Future<void> Get_Customer() async{
+  Future<void> getCustomer() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? Customerid = await preferences.getString('Customer_id');
-    DocumentSnapshot Customer_details = await FirebaseFirestore.instance
+    String? customerId = await preferences.getString('Customer_id');
+    DocumentSnapshot customerDetails = await FirebaseFirestore.instance
         .collection('CustomerLogin')
-        .doc(Customerid)
+        .doc(customerId)
         .get();
 
-    if (Customer_details.exists){
+    if (customerDetails.exists) {
       setState(() {
-        Customer_user_name = Customer_details['Name'];
-        Customer_PhoneNo = Customer_details['Phonenumber'];
-        SpecializedWork = Customer_details['SpecializedWork'];
-        Customer_id = Customerid;
-        Address= Customer_details['Address'];
+        customerUserName = customerDetails['Name'];
+        customerPhoneNo = customerDetails['Phn_no'];
+        this.customerId = customerId;
+        address = customerDetails['Address'];
       });
-      print(Customer_user_name);
-      print(Customer_id);
-      print(Customer_PhoneNo);
-      print(SpecializedWork);
-      print(Address);
     }
   }
-  String Date = DateFormat('dd-MM-yyyy').format(DateTime.now());
-  String Time = DateFormat('kk:mm').format(DateTime.now());
-  var Location_ctrl = TextEditingController();
 
-  Future<void>Customer_request()async{
-    FirebaseFirestore.instance.collection("Customer_request").add({
-      "Location": Location_ctrl.text,
-      "Date": Date,
-      "Time": Time,
-      "Address":Address,
+  // Date and Time
+  final String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  final String time = DateFormat('kk:mm').format(DateTime.now());
+
+  // Firestore Add Method
+  Future<void> addCustomerRequest() async {
+    await FirebaseFirestore.instance.collection("Customer_request").add({
+      "Location": locationController.text,
+      "NeededService": serviceController.text,
+      "CustomerAddress": addressController.text,
+      "CustomerPhoneNo": phoneController.text,
+      "WorkDescription": workDescriptionController.text,
+      "Date": date,
+      "Time": time,
+      "Address": address,
       "Worker_id": widget.Worker_id,
       "Worker_Name": widget.Name,
-      "SpecializedWork": SpecializedWork,
-      "Customer_id": Customer_id,
-      "Customer_user_name": Customer_user_name,
-      "Customer_PhoneNo": Customer_PhoneNo,
+      "SpecializedWork": specializedWork,
+      "Customer_id": customerId,
+      "Customer_user_name": customerUserName,
       "Amount": 0,
       "Payment": 0,
       "Worker_status": 0,
-      "Reject_reason":"Rejected",
+      "Reject_reason": "Rejected",
     });
-    print("Data Added Successfully/////////////////");
+    print("Data Added Successfully.");
   }
 
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -92,7 +101,7 @@ class _Book_WorkerState extends State<Book_Worker> {
             Padding(
               padding: const EdgeInsets.only(top: 30, left: 20),
               child: Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
@@ -130,7 +139,7 @@ class _Book_WorkerState extends State<Book_Worker> {
                         Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
@@ -157,13 +166,13 @@ class _Book_WorkerState extends State<Book_Worker> {
                                     children: [
                                       Text(
                                         "${widget.Name}",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         '${widget.SpecializedWork}',
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -173,100 +182,84 @@ class _Book_WorkerState extends State<Book_Worker> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 10,),
-                          child: Text(
-                            "Confirm Booking...",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 25.sp),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20,top: 10),
+                          padding: const EdgeInsets.all(20),
                           child: TextFormField(
+                            controller: serviceController,
                             decoration: InputDecoration(
                               hintText: 'Needed Service',
                               filled: true,
                               fillColor: Colors.grey.shade300,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12.r),
-                                borderSide: BorderSide.none
+                                borderSide: BorderSide.none,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          padding: const EdgeInsets.all(20),
                           child: TextFormField(
+                            controller: addressController,
                             decoration: InputDecoration(
                               hintText: 'Your Address',
                               filled: true,
                               fillColor: Colors.grey.shade300,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12.r),
-                                borderSide: BorderSide.none
+                                borderSide: BorderSide.none,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          padding: const EdgeInsets.all(20),
                           child: TextFormField(
+                            controller: phoneController,
                             decoration: InputDecoration(
                               hintText: 'Your Mobile Number',
                               filled: true,
                               fillColor: Colors.grey.shade300,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12.r),
-                                borderSide: BorderSide.none
+                                borderSide: BorderSide.none,
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 10,),
-                          child: Text(
-                            "Write About Your Work",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17.sp),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          padding: const EdgeInsets.all(20),
                           child: TextFormField(
+                            controller: workDescriptionController,
                             maxLines: 5,
                             decoration: InputDecoration(
+                              hintText: 'Write About Your Work',
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding:
-                          const EdgeInsets.only(left: 150, right: 100,top: 20),
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 42,right: 30),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("BOOK",style: TextStyle(color: Colors.white,fontSize: 25.sp,fontWeight: FontWeight.bold),)
-                                ],
+                          padding: const EdgeInsets.only(left: 150, top: 20),
+                          child: InkWell(
+                            onTap: addCustomerRequest,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 50.h,
+                              width: 150.w,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                            ),
-                            height: 50.h,
-                            width: 150.w,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10.r),
+                              child: Text(
+                                "BOOK",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),

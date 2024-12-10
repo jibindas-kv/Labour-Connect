@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Book_worker.dart';
 import 'package:labour_connect/Customer/Customer_Navbar.dart';
 
 class Customer_Home extends StatefulWidget {
@@ -143,19 +144,21 @@ class Workers extends StatefulWidget {
 }
 
 class _WorkersState extends State<Workers> {
-  // Fetch workers data from Firebase
-  Future<List<Map<String, dynamic>>> fetchWorkers() async {
-    final querySnapshot =
-    await FirebaseFirestore.instance.collection('WorkerLogin').get();
-    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  // Stream to fetch workers data
+  Stream<List<Map<String, dynamic>>> streamWorkers() {
+    return FirebaseFirestore.instance
+        .collection('WorkerLogin')
+        .snapshots()
+        .map((querySnapshot) =>
+        querySnapshot.docs.map((doc) => doc.data()).toList());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: fetchWorkers(),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: streamWorkers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -164,7 +167,7 @@ class _WorkersState extends State<Workers> {
             return Center(
               child: Text(
                 'Error: ${snapshot.error}',
-                style: TextStyle(color: Colors.red, fontSize: 18.sp),
+                style: const TextStyle(color: Colors.red, fontSize: 18),
               ),
             );
           }
@@ -172,7 +175,7 @@ class _WorkersState extends State<Workers> {
             return Center(
               child: Text(
                 'No workers found',
-                style: TextStyle(fontSize: 18.sp),
+                style: const TextStyle(fontSize: 18),
               ),
             );
           }
@@ -181,7 +184,7 @@ class _WorkersState extends State<Workers> {
 
           return GridView.builder(
             itemCount: workers.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 4.0,
               mainAxisSpacing: 4.0,
@@ -190,62 +193,77 @@ class _WorkersState extends State<Workers> {
               final worker = workers[index];
               return Padding(
                 padding: const EdgeInsets.only(top: 18, left: 5, right: 5),
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 50.h,
-                          width: 50.w,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/Worker.png"),
-                              fit: BoxFit.cover,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Book_Worker(
+                          Worker_id: worker['id'], // Ensure 'id' exists
+                          Name: worker["Name"],
+                          phn_no: worker["Number"],
+                          SpecializedWork: worker["SpecializedWork"],
+                          Address: worker["Place"],
+                        );
+                      },
+                    ));
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                image: AssetImage("assets/Worker.png"),
+                                fit: BoxFit.cover,
+                              ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
                             ),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6.r),
                           ),
-                        ),
-                        SizedBox(height: 2.h,),
-                        Text(
-                          worker['Name'] ?? 'Unknown',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
+                          const SizedBox(height: 2),
+                          Text(
+                            worker['Name'] ?? 'Unknown',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          worker['SpecializedWork'] ?? 'N/A',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            worker['SpecializedWork'] ?? 'N/A',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          worker['Place'] ?? 'N/A',
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            worker['Place'] ?? 'N/A',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          worker['isOnline'] == true ? "Online" : "Offline",
-                          style: TextStyle(
-                            color: worker['isOnline'] == true
-                                ? Colors.green
-                                : Colors.red,
-                            fontWeight: FontWeight.w900,
+                          Text(
+                            worker['isOnline'] == true ? "Online" : "Offline",
+                            style: TextStyle(
+                              color: worker['isOnline'] == true
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -257,7 +275,6 @@ class _WorkersState extends State<Workers> {
     );
   }
 }
-
 
 class Status extends StatefulWidget {
   const Status({super.key});
