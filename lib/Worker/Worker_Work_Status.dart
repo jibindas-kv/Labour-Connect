@@ -281,7 +281,7 @@ class _Worker_Work_StatusState extends State<Worker_Work_Status> {
                                     width: 30.w,
                                   ),
                                   Text(
-                                    "Reject Reason",
+                                    "Denial Reason",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 20.sp,
@@ -300,7 +300,7 @@ class _Worker_Work_StatusState extends State<Worker_Work_Status> {
                                     minLines: 5,
                                     maxLines: 10,
                                     decoration: InputDecoration(
-                                        hintText: "Reject reason",
+                                        hintText: "Denial reason",
                                         prefix: Padding(
                                           padding: const EdgeInsets.only(top: 10),
                                         ),
