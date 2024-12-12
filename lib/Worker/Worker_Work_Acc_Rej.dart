@@ -1,14 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Worker_Work_Acc_Rej extends StatefulWidget {
-  const Worker_Work_Acc_Rej({super.key});
+
+
+
+  const Worker_Work_Acc_Rej({super.key,
+    required this.Customer_id,
+    required this.NeededService,
+    required this.SpecializedWork,
+    required this.CustomerPhoneNo,
+    required this.Date,
+    required  this.Time,
+    required this.Customer_user_name,
+    required this. CustomerAddress,
+
+
+  });
+  final Customer_id;
+  final NeededService;
+  final  SpecializedWork;
+  final  CustomerPhoneNo;
+  final  Date;
+  final Time;
+  final Customer_user_name;
+  final CustomerAddress;
 
   @override
   State<Worker_Work_Acc_Rej> createState() => _Worker_Work_Acc_RejState();
 }
 
 class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
+  Future<void> _acceptworker() async {
+    await FirebaseFirestore.instance
+        .collection('Customer_request')
+        .doc(widget.Customer_id)
+        .update({'Worker_status': 1});
+    Navigator.pop(context);
+  }
+  Future<void> _rejectworker() async {
+    await FirebaseFirestore.instance
+        .collection('Customer_request')
+        .doc(widget.Customer_id)
+        .update({'Worker_status': 2});
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +99,11 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Customer Name',
+                                    widget.Customer_user_name,
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    'Prefered Work',
+                                    widget.SpecializedWork,
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ],
@@ -77,7 +115,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           padding: const EdgeInsets.only(left: 20,right: 20),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Issue Of Customer',
+                              hintText: widget.NeededService,
                               hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),
                               filled: true,
                               fillColor: Colors.grey.shade300,
@@ -94,7 +132,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           padding: const EdgeInsets.only(left: 20,right: 20),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Address',
+                              hintText: widget.CustomerAddress,
                               hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),
                               filled: true,
                               fillColor: Colors.grey.shade300,
@@ -111,7 +149,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           padding: const EdgeInsets.only(left: 20,right: 20),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Mobile Number',
+                              hintText: widget.CustomerPhoneNo,
                               hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),
                               filled: true,
                               fillColor: Colors.grey.shade300,
@@ -128,7 +166,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           padding: const EdgeInsets.only(left: 20,right: 20),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Date',
+                              hintText: widget.Date,
                               hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),
                               filled: true,
                               fillColor: Colors.grey.shade300,
@@ -145,7 +183,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           padding: const EdgeInsets.only(left: 20,right: 20),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Time',
+                              hintText: widget.Time,
                               hintStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.w600),
                               filled: true,
                               fillColor: Colors.grey.shade300,
@@ -162,7 +200,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                // Approve button action
+                                _acceptworker();
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),
@@ -173,7 +211,7 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                // Reject button action
+                                _rejectworker();
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: CircleBorder(),
