@@ -333,7 +333,7 @@ class _Worker_RequestsState extends State<Worker_Requests> {
                       ),
                       Text(
                         request['Customer_user_name'] ?? 'Unknown',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -341,12 +341,12 @@ class _Worker_RequestsState extends State<Worker_Requests> {
                       ),
                       Text(
                         request['NeededService'] ?? 'N/A',
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         request['CustomerAddress'] ?? 'N/A',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       Icon(
