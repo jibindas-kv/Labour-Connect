@@ -135,7 +135,6 @@ class _Customer_HomeState extends State<Customer_Home> {
 }
 
 
-
 class Workers extends StatefulWidget {
   const Workers({super.key});
 
@@ -144,13 +143,13 @@ class Workers extends StatefulWidget {
 }
 
 class _WorkersState extends State<Workers> {
-  // Stream to fetch workers data
+  // Stream to fetch workers data from Firestore
   Stream<List<Map<String, dynamic>>> streamWorkers() {
     return FirebaseFirestore.instance
         .collection('WorkerLogin')
         .snapshots()
         .map((querySnapshot) =>
-        querySnapshot.docs.map((doc) => doc.data()).toList());
+        querySnapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
   }
 
   @override
@@ -172,10 +171,10 @@ class _WorkersState extends State<Workers> {
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 'No workers found',
-                style: const TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18),
               ),
             );
           }
@@ -198,11 +197,11 @@ class _WorkersState extends State<Workers> {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return Book_Worker(
-                          Worker_id: worker['id'], // Ensure 'id' exists
-                          Name: worker["Name"],
-                          phn_no: worker["Number"],
-                          SpecializedWork: worker["SpecializedWork"],
-                          Address: worker["Place"],
+                          Worker_id: worker['worker_id'] ?? worker['id'],
+                          Name: worker["Name"] ?? "No Name",
+                          phn_no: worker["Number"] ?? "N/A",
+                          SpecializedWork: worker["SpecializedWork"] ?? "N/A",
+                          Address: worker["Place"] ?? "N/A",
                         );
                       },
                     ));
@@ -254,9 +253,9 @@ class _WorkersState extends State<Workers> {
                             ),
                           ),
                           Text(
-                            worker['isOnline'] == true ? "Online" : "Offline",
+                            worker['status'] == 1 ? "Online" : "Offline",
                             style: TextStyle(
-                              color: worker['isOnline'] == true
+                              color: worker['status'] == 1
                                   ? Colors.green
                                   : Colors.red,
                               fontWeight: FontWeight.w900,
@@ -275,6 +274,7 @@ class _WorkersState extends State<Workers> {
     );
   }
 }
+
 
 class Status extends StatefulWidget {
   const Status({super.key});

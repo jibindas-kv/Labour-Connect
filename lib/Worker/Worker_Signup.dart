@@ -15,38 +15,13 @@ class _Worker_SignupState extends State<Worker_Signup> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  void RegisterWorker() async {
-    if (formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential =
-            await _auth.createUserWithEmailAndPassword(
-          email: Email,
-          password: Password,
-        );
-
-        await _firestore
-            .collection('WorkerLogin')
-            .doc(userCredential.user!.uid)
-            .set({
-          'Name': Name,
-          'Email': Email,
-          'Phn_no': Phn_no,
-          'Place': Place,
-          'Address': Address,
-          'SpecializedWork': SpecializedWork,
-          "Role":"Worker"
-        });
-
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return Worker_Login();
-          },
-        ));
-      } catch (e) {
-        print("Registration Error: $e");
-      }
-    }
-  }
+  String Name = "";
+  String Email = "";
+  String Phn_no = "";
+  String Place = "";
+  String Address = "";
+  String SpecializedWork = "";
+  String Password = "";
 
   final List<String> _works = [
     'Plumbing',
@@ -57,21 +32,68 @@ class _Worker_SignupState extends State<Worker_Signup> {
     'Washing',
     'Select'
   ];
-  String Name = "";
-  String Email = "";
-  String Phn_no = "";
-  String Place = "";
-  String Address = "";
-  String SpecializedWork = "";
-  String Password = "";
+  String Work = 'Select';
 
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
-  String Work = 'Select';
+  void RegisterWorker() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true; // Start loading
+      });
+      try {
+        UserCredential userCredential =
+        await _auth.createUserWithEmailAndPassword(
+          email: Email,
+          password: Password,
+        );
+
+        String workerId = userCredential.user!.uid; // call worker id
+
+        // Save worker data with worker_id in Firestore
+        await _firestore.collection('WorkerLogin').doc(workerId).set({
+          'worker_id': workerId,
+          'Name': Name,
+          'Email': Email,
+          'Phn_no': Phn_no,
+          'Place': Place,
+          'Address': Address,
+          'SpecializedWork': SpecializedWork,
+          'Role': "Worker",
+          'status':0
+        });
+
+        // Navigate to Worker Login page
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => Worker_Login(),
+        ));
+      } catch (e) {
+        _showErrorDialog("Registration failed: ${e.toString()}");
+      }
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Error"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -81,24 +103,17 @@ class _Worker_SignupState extends State<Worker_Signup> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 60.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Signup",
-                      style: TextStyle(
-                        fontSize: 50.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                Center(
+                  child: Text(
+                    "Signup",
+                    style: TextStyle(
+                      fontSize: 50.sp,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: 10.h),
-                Text(
-                  "Name",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 20.h),
+                Text("Name", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Name = value,
                   decoration: InputDecoration(
@@ -106,21 +121,17 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Name';
+                      return 'Enter your name';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Email",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Email", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Email = value,
                   decoration: InputDecoration(
@@ -128,24 +139,20 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Email';
+                      return 'Enter your email';
                     } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$')
                         .hasMatch(value)) {
-                      return 'Please Enter A Valid Email Address';
+                      return 'Enter a valid email address';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Phone number",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Phone Number", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Phn_no = value,
                   decoration: InputDecoration(
@@ -153,23 +160,19 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Phone Number';
-                    } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                      return 'Please Enter A Valid 10-digit Phone Number';
+                      return 'Enter your phone number';
+                    } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                      return 'Enter a valid 10-digit phone number';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Place",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Place", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Place = value,
                   decoration: InputDecoration(
@@ -177,21 +180,17 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Place';
+                      return 'Enter your place';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Address",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Address", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Address = value,
                   decoration: InputDecoration(
@@ -199,24 +198,20 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Address';
+                      return 'Enter your address';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Specialized Work",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Specialized Work", style: TextStyle(fontWeight: FontWeight.bold)),
                 Container(
                   height: 55,
-                  width: 400.w,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
                     color: Colors.grey.shade300,
@@ -226,53 +221,42 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     child: DropdownButton<String>(
                       dropdownColor: Colors.grey.shade300,
                       value: Work,
-                      icon: Padding(
-                        padding: const EdgeInsets.only(left: 250),
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          size: 40,
-                        ),
-                      ),
+                      isExpanded: true,
+                      icon: const Icon(Icons.arrow_drop_down),
                       items: _works.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text(value),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                        setState(() {
-                          SpecializedWork = newValue!;
-                        });
+                        if (newValue != null && newValue != 'Select') {
+                          setState(() {
+                            Work = newValue;
+                            SpecializedWork = newValue;
+                          });
+                        }
                       },
                     ),
                   ),
                 ),
-                SizedBox(height: 15.sp),
-                Text(
-                  "Password",
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+                SizedBox(height: 15.h),
+                Text("Password", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextFormField(
                   onChanged: (value) => Password = value,
+                  obscureText: true,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: BorderSide.none,
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter Your Password';
+                      return 'Enter your password';
                     } else if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
+                      return 'Password must be at least 6 characters';
                     }
                     return null;
                   },
@@ -283,56 +267,37 @@ class _Worker_SignupState extends State<Worker_Signup> {
                     onPressed: RegisterWorker,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
                       padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 100,
-                      ),
+                          vertical: 15, horizontal: 100),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Signup",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
-                SizedBox(height: 25.sp),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already Have An Account ? ",
-                        style: TextStyle(fontSize: 15.sp),
+                SizedBox(height: 20.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account? "),
+                    GestureDetector(
+                      onTap: () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Worker_Login()),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return Worker_Login();
-                          },));
-
-                        },
-                        child: Text(
-                          "Sign in",
-                          style: TextStyle(
-                            fontSize: 16.sp.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
+                      child: const Text(
+                        "Sign in",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                SizedBox(height: 40.h),
               ],
             ),
           ),
         ),
       ),
     );
-  }}
+  }
+}
