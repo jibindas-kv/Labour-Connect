@@ -91,7 +91,7 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
                                     MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        customer['Name'], // Field name in Firestore
+                                        "${customer["Name"] ?? ""}", // Field name in Firestore
                                         style: TextStyle(
                                             fontWeight: FontWeight.w800,
                                             fontSize: 16.sp),

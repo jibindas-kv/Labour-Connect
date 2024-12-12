@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -39,71 +40,88 @@ class _Customer_NotificationState extends State<Customer_Notification> {
                           topRight: Radius.circular(20.r))),
                   height: 731.h,
                   width: double.infinity,
-                  child:ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.r),
-                              border: Border.all(color: Colors.black,width: 2)),
-                          child: Card(
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, top: 10, bottom: 10, right: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
+                  child:StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                     .collection("Customer_Notification")
+                         .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      final CustomerNotification = snapshot.data?.docs ?? [];
+                      return ListView.builder(
+
+                        itemCount: CustomerNotification.length,
+                        itemBuilder: (context, index) {
+                          final doc = CustomerNotification[index];
+                          final customernoti= doc .data() as Map<String, dynamic>;
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(color: Colors.black,width: 2)),
+                              child: Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, top: 10, bottom: 10, right: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Notification 1",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "${customernoti["Content"] ?? ""}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "${customernoti["Time"] ?? ""}",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.normal),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "10:00",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.normal),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 3.h,
+                                      ),
+                                      Wrap(
+                                        children: [
+                                          Text(
+                                            "${customernoti["Content"] ?? ""}",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  Wrap(
-                                    children: [
-                                      Text(
-                                        "Notification Content",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    },),
+                          );
+                        },);
+                    },
+                  ),
                 ),
               ],
             ),

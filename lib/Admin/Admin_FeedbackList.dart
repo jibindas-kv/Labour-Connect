@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Admin/Admin_Feedback_View.dart';
@@ -39,43 +40,60 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                           topRight: Radius.circular(20.r))),
                   height: 731.h,
                   width: double.infinity,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 10),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return Admin_Feedback_View();},));
-                          },
-                          child: Container(
-                            height: 50.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Customer Name",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 16.sp),
+                  child: StreamBuilder(
+                    stream:FirebaseFirestore.instance
+        .collection("CustomerLogin")
+        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      final Feedbacklist = snapshot.data?.docs ?? [];
+                      return ListView.builder(
+                        itemCount: Feedbacklist.length ,
+                        itemBuilder: (context, index) {
+                          final doc = Feedbacklist[index];
+                          final feedbacklt= doc .data() as Map<String, dynamic>;
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, bottom: 10),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return Admin_Feedback_View();},));
+                              },
+                              child: Container(
+                                height: 50.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10, right: 15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "${feedbacklt["Name"] ?? ""}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 16.sp),
+                                      ),
+                                      Text(
+                                        "${feedbacklt["Date"] ?? ""}",
+                                        style: TextStyle(
+                                            color: Colors.grey[700], fontSize: 12.sp),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    "12/11/2024",
-                                    style: TextStyle(
-                                        color: Colors.grey[700], fontSize: 12.sp),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
                     },
                   ),
