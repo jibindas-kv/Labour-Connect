@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:labour_connect/Customer/Customer_Home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Book_Worker extends StatefulWidget {
@@ -25,7 +26,6 @@ class Book_Worker extends StatefulWidget {
 
 class _Book_WorkerState extends State<Book_Worker> {
   // Controllers for TextFormField widgets
-  final TextEditingController locationController = TextEditingController();
   final TextEditingController serviceController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -36,8 +36,9 @@ class _Book_WorkerState extends State<Book_Worker> {
   String? customerId;
   String? customerUserName;
   String? customerPhoneNo;
-  String? specializedWork;
   String? address;
+
+  bool isLoading = false; // Loading state variable
 
   @override
   void initState() {
@@ -65,30 +66,46 @@ class _Book_WorkerState extends State<Book_Worker> {
 
   // Date and Time
   final String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
-  final String time = DateFormat('kk:mm').format(DateTime.now());
+  final String time = DateFormat('hh:mm a').format(DateTime.now());
 
   // Firestore Add Method
   Future<void> addCustomerRequest() async {
-    await FirebaseFirestore.instance.collection("Customer_request").add({
-      "Location": locationController.text,
-      "NeededService": serviceController.text,
-      "CustomerAddress": addressController.text,
-      "CustomerPhoneNo": phoneController.text,
-      "WorkDescription": workDescriptionController.text,
-      "Date": date,
-      "Time": time,
-      "Address": address,
-      "Worker_id": widget.Worker_id,
-      "Worker_Name": widget.Name,
-      "SpecializedWork": specializedWork,
-      "Customer_id": customerId,
-      "Customer_user_name": customerUserName,
-      "Amount": 0,
-      "Payment": 0,
-      "Worker_status": 0,
-      "Reject_reason": "Rejected",
+    setState(() {
+      isLoading = true; // Show loading indicator
     });
-    print("Data Added Successfully.");
+
+    try {
+      await FirebaseFirestore.instance.collection("Customer_request").add({
+        "NeededService": serviceController.text,
+        "CustomerAddress": addressController.text,
+        "CustomerPhoneNo": phoneController.text,
+        "WorkDescription": workDescriptionController.text,
+        "Date": date,
+        "Time": time,
+        "Worker_id": widget.Worker_id,
+        "Worker_Name": widget.Name,
+        "SpecializedWork": widget.SpecializedWork,
+        "Customer_id": customerId,
+        "Customer_user_name": customerUserName,
+        "Amount": 0,
+        "Payment": 0,
+        "Worker_status": 0,
+        "Reject_reason": "Rejected",
+      });
+      print("Data Added Successfully.");
+
+      // After adding the request, navigate to CustomerHome
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return Customer_Home();
+      },)); // Adjust the route name as needed
+
+    } catch (e) {
+      print("Error: $e");
+    } finally {
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
+    }
   }
 
   @override
@@ -147,17 +164,17 @@ class _Book_WorkerState extends State<Book_Worker> {
                               child: Row(
                                 children: [
                                   Container(
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 48.sp,
-                                      color: Colors.white,
-                                    ),
-                                    height: 70.h,
-                                    width: 70.w,
+                                    height: 50,
+                                    width: 50,
                                     decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius:
-                                        BorderRadius.circular(15.r)),
+                                      border: Border.all(),
+                                      image: const DecorationImage(
+                                        image: AssetImage("assets/Worker.png"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
                                   ),
                                   SizedBox(width: 16.w),
                                   Column(
@@ -253,7 +270,11 @@ class _Book_WorkerState extends State<Book_Worker> {
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
-                              child: Text(
+                              child: isLoading
+                                  ? CircularProgressIndicator(
+                                color: Colors.white,
+                              ) // Show loading indicator while processing
+                                  : Text(
                                 "BOOK",
                                 style: TextStyle(
                                     color: Colors.white,
