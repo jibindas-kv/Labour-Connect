@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:labour_connect/Customer/Customer_Login.dart';
 
 class Customer_Signup extends StatefulWidget {
@@ -16,6 +17,7 @@ class _Customer_SignupState extends State<Customer_Signup> {
   final _firestore = FirebaseFirestore.instance;
 
   bool _isLoading = false; // Loading state
+  final String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   void RegisterCustomer() async {
     if (formkey.currentState!.validate()) {
@@ -39,6 +41,7 @@ class _Customer_SignupState extends State<Customer_Signup> {
           'Place': Place,
           'Address': Address,
           "Role": "customer",
+          'Date':date
         });
 
         Navigator.pushReplacement(context, MaterialPageRoute(

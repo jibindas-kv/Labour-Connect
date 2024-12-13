@@ -65,7 +65,18 @@ class _Admin_Worker_ListState extends State<Admin_Worker_List> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return Admin_WorkerListView();},));
+                                  return Admin_WorkerListView(
+                                    Worker_id: doc.id,
+                                    Worker_name: Workerlt["Name"],
+                                    Worker_Email: Workerlt["Email"],
+                                    Worker_Phn_no: Workerlt["Phn_no"],
+                                    Worker_place: Workerlt["Place"],
+                                    Worker_address: Workerlt["Address"],
+                                    Specialized_Work: Workerlt["SpecializedWork"],
+
+
+
+                                  );},));
                               },
                               child: Container(
                                 height: 50.h,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:labour_connect/Worker/Worker_Login.dart';
 
 class Worker_Signup extends StatefulWidget {
@@ -36,6 +37,7 @@ class _Worker_SignupState extends State<Worker_Signup> {
 
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
+  final String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   void RegisterWorker() async {
     if (formKey.currentState!.validate()) {
@@ -61,7 +63,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
           'Address': Address,
           'SpecializedWork': SpecializedWork,
           'Role': "Worker",
-          'status':0
+          'status':0,
+          "Date":date
         });
 
         // Navigate to Worker Login page
