@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Worker/Worker_Authgate.dart';
 import 'package:labour_connect/Worker/Worker_Profile.dart';
+import 'package:labour_connect/Worker/Worker_Work_Acc_Rej.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Worker_Home extends StatefulWidget {
@@ -309,52 +310,67 @@ class _Worker_RequestsState extends State<Worker_Requests> {
             ),
             itemBuilder: (context, index) {
               final request = requests[index];
-
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 50.h,
-                        width: 50.w,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6.r)),
-                        child: Icon(
-                          Icons.person,
-                          size: 35.sp,
+              return InkWell(
+                onTap: () {
+                 Navigator.push(context, MaterialPageRoute(builder: (context) {
+                   return Worker_Work_Acc_Rej(
+                       Customer_id:["Customer_id"],
+                       Customer_user_name:["Customer_user_name"],
+                     SpecializedWork:["SpecializedWork"],
+                       NeededService: ["NeededService"],
+                       CustomerPhoneNo:["CustomerPhoneNo"],
+                       Date:["Date"],
+                       Time:["Time"],
+                       CustomerAddress:["CustomerAddress"],
+                   );
+                 },));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 50.h,
+                          width: 50.w,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6.r)),
+                          child: Icon(
+                            Icons.person,
+                            size: 35.sp,
+                          ),
                         ),
-                      ),
-                      Text(
-                        request['Customer_user_name'] ?? 'Unknown',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          request['Customer_user_name'] ?? 'Unknown',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        request['NeededService'] ?? 'N/A',
-                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        request['CustomerAddress'] ?? 'N/A',
-                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      Icon(
-                        Icons.info_outline,
-                        size: 20,
-                        color: Colors.blueAccent,
-                      ),
-                    ],
+                        Text(
+                          request['NeededService'] ?? 'N/A',
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          request['CustomerAddress'] ?? 'N/A',
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        Icon(
+                          Icons.info_outline,
+                          size: 20,
+                          color: Colors.blueAccent,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
