@@ -36,14 +36,14 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
     await FirebaseFirestore.instance
         .collection('Customer_request')
         .doc(widget.Customer_id)
-        .update({'Worker_status': 1});
+        .update({'status': 1});
     Navigator.pop(context);
   }
   Future<void> _rejectworker() async {
     await FirebaseFirestore.instance
         .collection('Customer_request')
         .doc(widget.Customer_id)
-        .update({'Worker_status': 2});
+        .update({'status': 2});
     Navigator.pop(context);
   }
 
