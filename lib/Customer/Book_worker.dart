@@ -74,8 +74,9 @@ class _Book_WorkerState extends State<Book_Worker> {
       isLoading = true; // Show loading indicator
     });
 
+
     try {
-      await FirebaseFirestore.instance.collection("Customer_request").add({
+      DocumentReference docRef = await FirebaseFirestore.instance.collection("Customer_request").add({
         "NeededService": serviceController.text,
         "CustomerAddress": addressController.text,
         "CustomerPhoneNo": phoneController.text,
@@ -89,10 +90,14 @@ class _Book_WorkerState extends State<Book_Worker> {
         "Customer_user_name": customerUserName,
         "Amount": 0,
         "Payment": 0,
-        "Worker_status": 0,
+        "Work_status": 0,
         "Reject_reason": "Rejected",
       });
       print("Data Added Successfully.");
+      String customerRequestId = docRef.id;
+      await docRef.update({
+        "customer_request_id": customerRequestId, // Set the `customer_request_id` field to the document ID
+      });
 
       // After adding the request, navigate to CustomerHome
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {

@@ -314,14 +314,15 @@ class _Worker_RequestsState extends State<Worker_Requests> {
                 onTap: () {
                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                    return Worker_Work_Acc_Rej(
-                       Customer_id:["Customer_id"],
-                       Customer_user_name:["Customer_user_name"],
-                     SpecializedWork:["SpecializedWork"],
-                       NeededService: ["NeededService"],
-                       CustomerPhoneNo:["CustomerPhoneNo"],
-                       Date:["Date"],
-                       Time:["Time"],
-                       CustomerAddress:["CustomerAddress"],
+                     doc_id:request["customer_request_id"],
+                       Customer_id:request["Customer_id"],
+                       Customer_user_name:request["Customer_user_name"],
+                       NeededService: request["NeededService"],
+                       CustomerPhoneNo:request["CustomerPhoneNo"],
+                       Date:request["Date"],
+                       Time:request["Time"],
+                       CustomerAddress:request["CustomerAddress"],
+                       Work_discription:request["WorkDescription"],
                    );
                  },));
                 },
