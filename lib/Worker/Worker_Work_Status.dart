@@ -2,20 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Worker_Work_Status extends StatefulWidget {
-  const Worker_Work_Status({super.key});
+  const Worker_Work_Status({
+    super.key,
+    required this.id,
+    required this.Work,
+    required this.Name,
+    required this.Date,
+    required this.Time,
+    required this.Place,
+  });
+
+  final String id;
+  final String Work;
+  final String Name;
+  final String Date;
+  final String Time;
+  final String Place;
 
   @override
   State<Worker_Work_Status> createState() => _Worker_Work_StatusState();
 }
 
 class _Worker_Work_StatusState extends State<Worker_Work_Status> {
-  @override
+  late String _status;
+  bool _isLoading = true;
 
-  String _status = 'Completed';
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _status = 'Completed'; // Default value
+      _isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
+      body: _isLoading
+          ? Center(
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      )
+          : SingleChildScrollView(
         child: Column(
           children: [
             Padding(
@@ -35,315 +71,252 @@ class _Worker_Work_StatusState extends State<Worker_Work_Status> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.r),
-                            topRight: Radius.circular(20.r))),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
+                      ),
+                    ),
                     height: 725.h,
                     width: double.infinity,
-                    child:Column(
+                    child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20,top: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           child: Card(
                             color: Colors.black,
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 15, bottom: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        height: 70.w,
-                                        width: 70.w,
+                                        height: 60.w,
+                                        width: 60.w,
                                         decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage("assets/Person.png"),
-                                              fit: BoxFit.cover,
-                                            ),
-                                            borderRadius: BorderRadius.circular(10.r)),
+                                          image: DecorationImage(
+                                            image: AssetImage("assets/Person.png"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10.r),
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
+                                      SizedBox(height: 5.h),
                                       Text(
-                                        "Name",
+                                        widget.Name,
                                         style: TextStyle(
-                                          fontSize: 20.sp,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 3.h,
+                                          fontSize: 18.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    width: 90.h,
-                                  ),
-                                  Wrap(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Preffered Work",
-                                            style: TextStyle(
-                                                fontSize: 17.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          Text(
-                                            "Date",
-                                            style: TextStyle(
-                                                fontSize: 17.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          Text(
-                                            "Time",
-                                            style: TextStyle(
-                                                fontSize: 17.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: 5.h,
-                                          ),
-                                          Text(
-                                            "Place",
-                                            style: TextStyle(
-                                                fontSize: 17.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      )
+                                      Text(
+                                        widget.Work,
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        widget.Date,
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        widget.Time,
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      // Text(
+                                      //   widget.Place,
+                                      //   style: TextStyle(
+                                      //     fontSize: 17.sp,
+                                      //     color: Colors.white,
+                                      //     fontWeight: FontWeight.w600,
+                                      //   ),
+                                      // ),
                                     ],
-                                  )
+                                  ),
+                                  SizedBox(width: 5.w,)
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
+                        SizedBox(height: 40.h),
                         Row(
                           children: [
-                            SizedBox(
-                              width: 30.w,
-                            ),
+                            SizedBox(width: 30.w),
                             Text(
                               "Add Status",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600),
+                                color: Colors.black,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Radio<String>(
-                                        activeColor: Colors.black,
-                                        value: 'Completed',
-                                        groupValue: _status,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _status = value!;
-                                          });
-                                        },
-                                      ),
-                                      Text('Completed',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600)),
-                                    ],
-                                  ),
-                                  SizedBox(width: 20.w), // Space between containers
-                                  Row(
-                                    children: [
-                                      Radio<String>(
-                                        hoverColor: Colors.blue,
-                                        activeColor: Colors.black,
-                                        value: 'Not Completed',
-                                        groupValue: _status,
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            _status = value!;
-                                          });
-                                        },
-                                      ),
-                                      Text('Not Completed',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50.h,
-                        ),
-                        Container(
-                          child: _status == "Completed"
-                              ? Column(
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 30.w,
-                                  ),
-                                  Text(
-                                    "Amount",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 50.h,
-                              ),
-                              Container(
-                                height: 60.h,
-                                width: 250.w,
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.currency_rupee),
-                                      hintText: "amount",
-                                      prefix: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                      ),
-                                      hintStyle: TextStyle(
-                                        fontSize: 15.sp,
-                                      ),
-                                      focusColor: Colors.white,
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(10)),
-                                      fillColor: Colors.white,
-                                      filled: true),
+                        SizedBox(height: 30.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  activeColor: Colors.black,
+                                  value: 'Completed',
+                                  groupValue: _status,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _status = value!;
+                                    });
+                                  },
                                 ),
-                              ),
-                              SizedBox(
-                                height: 60.h,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  height: 60.h,
-                                  width: 230.w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(10.r)),
-                                  child: Center(
-                                      child: Text(
-                                        'Submit',
-                                        style: TextStyle(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      )),
-                                ),
-                              ),
-                            ],
-                          )
-                              : Column(
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 30.w,
-                                  ),
-                                  Text(
-                                    "Denial Reason",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.only(left: 30, right: 30),
-                                child: Container(
-                                  child: TextFormField(
-                                    minLines: 5,
-                                    maxLines: 10,
-                                    decoration: InputDecoration(
-                                        hintText: "Denial reason",
-                                        prefix: Padding(
-                                          padding: const EdgeInsets.only(top: 10),
-                                        ),
-                                        hintStyle: TextStyle(
-                                          fontSize: 15.sp,
-                                        ),
-                                        focusColor: Colors.white,
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(10)),
-                                        fillColor: Colors.white,
-                                        filled: true),
+                                Text(
+                                  'Completed',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                },
-                                child: Container(
-                                  height: 60.h,
-                                  width: 230.w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(10.r)),
-                                  child: Center(
-                                      child: Text(
-                                        'Submit',
-                                        style: TextStyle(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      )),
+                              ],
+                            ),
+                            SizedBox(width: 20.w),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  activeColor: Colors.black,
+                                  value: 'Not Completed',
+                                  groupValue: _status,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _status = value!;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  'Not Completed',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 30.h),
+                        if (_status == "Completed") ...[
+                          Row(
+                            children: [
+                              SizedBox(width: 30.w),
+                              Text(
+                                "Amount",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(height: 40.h),
+                          Container(
+                            height: 60.h,
+                            width: 250.w,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.currency_rupee),
+                                hintText: "Amount",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 70.h),
+                        ] else ...[
+                          Row(
+                            children: [
+                              SizedBox(width: 30.w),
+                              Text(
+                                "Denial Reason",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20.h),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: TextFormField(
+                              minLines: 5,
+                              maxLines: 10,
+                              decoration: InputDecoration(
+                                hintText: "Denial reason",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 50.h),
+                        ],
+                        InkWell(
+                          onTap: () {
+                            // Submit logic here
+                          },
+                          child: Container(
+                            height: 60.h,
+                            width: 230.w,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
+
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
