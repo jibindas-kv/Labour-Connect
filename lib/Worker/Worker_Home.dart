@@ -516,13 +516,13 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                               child
                                   : request["Payment"] == 4
                                   ? Container(
-                                width: 100.w,
-                                height: 50.h,
+                                width: 150.w,
+                                height: 25.h,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                     BorderRadius.circular(
                                         10.r),
-                                    color: Colors.green),
+                                    color: Colors.red),
                                 child: Center(
                                   child: Text(
                                     'Payment Failed',
@@ -558,7 +558,7 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                                       MaterialPageRoute(
                                         builder: (context) {
                                           return Worker_Work_Status(
-                                            id: request["Worker_id"],
+                                            id: request["customer_request_id"],
                                             Work: request["NeededService"],
                                             Name: request["Customer_user_name"],
                                             Date: request["Date"],
