@@ -110,229 +110,231 @@ class _Worker_Work_Acc_RejState extends State<Worker_Work_Acc_Rej> {
                     ),
                     height: 725.h,
                     width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20),
-                        Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.person,
-                                    size: 48,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        widget.Customer_user_name,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20),
+                          Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person,
+                                      size: 48,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          widget.Customer_user_name,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
+                                        Text(
+                                          widget.NeededService,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20,top: 10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("  Needed Service",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
+                                  ],
+                                ),
+                                SizedBox(height: 3.h,),
+                                Card(
+                                  color: Colors.grey.shade300,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0), // Adjust padding as needed
+                                    child: Text(
+                                      widget.Work_discription ?? '',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      Text(
-                                        widget.NeededService,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20,top: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  Needed Service",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
-                                ],
-                              ),
-                              SizedBox(height: 3.h,),
-                              TextFormField(
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  hintText:widget.Work_discription,
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide.none,
+                          ),
+                          SizedBox(height: 16.h),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("  Address",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
+                                  ],
+                                ),
+                                SizedBox(height: 3.h,),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: widget.CustomerAddress,
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade300,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide.none,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  Address",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
-                                ],
-                              ),
-                              SizedBox(height: 3.h,),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: widget.CustomerAddress,
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  Phone Number",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
-                                ],
-                              ),
-                              SizedBox(height: 3.h,),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: widget.CustomerPhoneNo,
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  Date",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
-                                ],
-                              ),
-                              SizedBox(height: 3.h,),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: widget.Date,
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text("  Time",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
-                                ],
-                              ),
-                              SizedBox(height: 3.h,),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: widget.Time,
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 30.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                _acceptwork();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(24),
-                                backgroundColor: Colors.black,
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 32,
-                              ),
+                              ],
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                _rejectwork();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(24),
-                                backgroundColor: Colors.red,
-                              ),
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 32,
-                              ),
+                          ),
+                          SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("  Phone Number",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
+                                  ],
+                                ),
+                                SizedBox(height: 3.h,),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: widget.CustomerPhoneNo,
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade300,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("  Date",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
+                                  ],
+                                ),
+                                SizedBox(height: 3.h,),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: widget.Date,
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade300,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("  Time",style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold,fontSize: 14.sp),),
+                                  ],
+                                ),
+                                SizedBox(height: 3.h,),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: widget.Time,
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade300,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 30.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  _acceptwork();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.all(24),
+                                  backgroundColor: Colors.black,
+                                ),
+                                child: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _rejectwork();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.all(24),
+                                  backgroundColor: Colors.red,
+                                ),
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

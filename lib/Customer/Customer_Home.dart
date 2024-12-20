@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Customer/Book_worker.dart';
 import 'package:labour_connect/Customer/Customer_Navbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Customer_Home extends StatefulWidget {
   const Customer_Home({super.key});
@@ -19,14 +20,15 @@ class _Customer_HomeState extends State<Customer_Home> {
       child: Scaffold(
         drawer: Customer_Navbar(),
         drawerEnableOpenDragGesture: true,
-        appBar: AppBar(backgroundColor: Colors.black,iconTheme: IconThemeData(color: Colors.white,size: 30.sp)),
+        appBar: AppBar(
+            backgroundColor: Colors.black,
+            iconTheme: IconThemeData(color: Colors.white, size: 30.sp)),
         backgroundColor: Colors.black,
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 25,right: 25,bottom: 15),
+              padding: const EdgeInsets.only(left: 25, right: 25, bottom: 15),
               child: TextFormField(
-
                 decoration: InputDecoration(
                   hintText: "Search",
                   hintStyle: TextStyle(color: Colors.black),
@@ -40,7 +42,6 @@ class _Customer_HomeState extends State<Customer_Home> {
                 ),
               ),
             ),
-
             Expanded(
               child: Stack(
                 children: [
@@ -59,15 +60,15 @@ class _Customer_HomeState extends State<Customer_Home> {
                             Stack(
                               children: [
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
                                   child: Container(
                                     height: 50.h,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                         color: Colors.grey,
                                         borderRadius:
-                                        BorderRadius.circular(15.r)),
+                                            BorderRadius.circular(15.r)),
                                   ),
                                 ),
                                 Container(
@@ -82,7 +83,7 @@ class _Customer_HomeState extends State<Customer_Home> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(15.r)),
+                                                  BorderRadius.circular(15.r)),
                                           child: Center(
                                             child: Text(
                                               'Workers',
@@ -98,7 +99,7 @@ class _Customer_HomeState extends State<Customer_Home> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(15.r)),
+                                                  BorderRadius.circular(15.r)),
                                           child: Center(
                                             child: Text(
                                               'Status',
@@ -134,7 +135,6 @@ class _Customer_HomeState extends State<Customer_Home> {
   }
 }
 
-
 class Workers extends StatefulWidget {
   const Workers({super.key});
 
@@ -145,11 +145,10 @@ class Workers extends StatefulWidget {
 class _WorkersState extends State<Workers> {
   // Stream to fetch workers data from Firestore
   Stream<List<Map<String, dynamic>>> streamWorkers() {
-    return FirebaseFirestore.instance
-        .collection('WorkerLogin')
-        .snapshots()
-        .map((querySnapshot) =>
-        querySnapshot.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
+    return FirebaseFirestore.instance.collection('WorkerLogin').snapshots().map(
+        (querySnapshot) => querySnapshot.docs
+            .map((doc) => {'id': doc.id, ...doc.data()})
+            .toList());
   }
 
   @override
@@ -275,7 +274,6 @@ class _WorkersState extends State<Workers> {
   }
 }
 
-
 class Status extends StatefulWidget {
   const Status({super.key});
 
@@ -284,73 +282,251 @@ class Status extends StatefulWidget {
 }
 
 class _StatusState extends State<Status> {
+  String? CustomerId;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchWorkerData();
+  }
+
+  Future<void> fetchWorkerData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? fetchedWorkerId =
+        prefs.getString('Customer_id'); // Retrieve workerId
+
+    if (fetchedWorkerId != null && fetchedWorkerId.isNotEmpty) {
+      setState(() {
+        CustomerId = fetchedWorkerId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(
-                left: 10, right: 10, top: 18),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(20.r),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 20,top: 10,bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("Customer_request")
+            .where('Customer_id', isEqualTo: CustomerId) // Firebase collection
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text("No data available."));
+          }
+
+          final workerDetails = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: workerDetails.length,
+            itemBuilder: (context, index) {
+              final Status =
+                  workerDetails[index].data() as Map<String, dynamic>;
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 18),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 20, top: 10, bottom: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Name Of Worker",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              Status["Worker_Name"] ?? "Name Unavailable",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              Status["Date"] ?? "Date Unavailable",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              Status["Time"] ?? "Time Unavailable",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              Status["NeededService"] ?? "Work Unavailable",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Date",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Time",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Requested Work",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        Column(
+                          children: [
+                            Center(
+                                child: Status["Payment"] == 3
+                                    ? InkWell(
+                                        onTap: () {
+                                          // Navigator.push(context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) {
+                                          //         return User_mechanic_bill(
+                                          //             id: doc.id,
+                                          //             Amount: Mech_req[
+                                          //             "Amount"],
+                                          //             Name: Mech_req[
+                                          //             "Mech_name"],
+                                          //             Experiance: Mech_req[
+                                          //             "Mech_experiance"],
+                                          //             Profile: Mech_req[
+                                          //             "Mech_profile"]);
+                                          //       },
+                                          //     ));
+                                        },
+                                        child: Container(
+                                          height: 40.h,
+                                          width: 130.w,
+                                          decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r)),
+                                          child: Center(
+                                            child: Text(
+                                              "Pay",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Status["Payment"] == 4
+                                        ? InkWell(
+                                            onTap: () {
+                                              //   Navigator.push(context,
+                                              //       MaterialPageRoute(
+                                              //         builder: (context) {
+                                              //           return User_mechanic_failed();
+                                              //         },
+                                              //       ));
+                                            },
+                                            child: Container(
+                                              height: 40.h,
+                                              width: 130.w,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.r)),
+                                              child: Center(
+                                                child: Text(
+                                                  "Failed",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Status["Payment"] == 5
+                                            ? Container(
+                                                height: 50.h,
+                                                width: 120.w,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.green,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r)),
+                                                child: Center(
+                                                  child: Text(
+                                                    " Payment\nCompleted",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ),
+                                              )
+                                            : Status["Work_status"] == 0
+                                                ? Container(
+                                                    height: 40.h,
+                                                    width: 130.w,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.grey,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    20.r)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Pending",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Status["Work_status"] == 1
+                                                    ? Container(
+                                                        height: 40.h,
+                                                        width: 130.w,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.green,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.r)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Approved",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        height: 40.h,
+                                                        width: 130.w,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.r)),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "Rejected",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                        ),
+                                                      )),
+                          ],
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 30.h,
-                          width: 100.w,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(15.r)),
-                          child: Center(
-                              child: Text(
-                                "Pay",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                    fontWeight: FontWeight.bold, fontSize: 16.sp),
-                              )),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ),
-            ),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
