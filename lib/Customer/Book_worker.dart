@@ -92,6 +92,8 @@ class _Book_WorkerState extends State<Book_Worker> {
         "Payment": 0,
         "Work_status": 0,
         "Reject_reason": "Rejected",
+        "complaint":"Good Service",
+        "Experience":"Good Experience"
       });
       print("Data Added Successfully.");
       String customerRequestId = docRef.id;

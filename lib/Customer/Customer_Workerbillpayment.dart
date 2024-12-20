@@ -1,14 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:labour_connect/Customer/Customer_Home.dart';
 
 class Customer_Billpayment extends StatefulWidget {
-  const Customer_Billpayment({super.key});
+  const Customer_Billpayment(
+      {super.key,
+      required this.id,
+      required this.Amount,
+      required this.Name,
+      required this.Work,
+      required this.doc_id});
+  final id;
+  final Amount;
+  final Name;
+  final Work;
+  final doc_id;
 
   @override
   State<Customer_Billpayment> createState() => _Customer_BillpaymentState();
 }
 
 class _Customer_BillpaymentState extends State<Customer_Billpayment> {
+  String ? Complaint_ctrl ;
+  String ?Experience_ctrl;
+
+  Future<void> Pay() async {
+    FirebaseFirestore.instance
+        .collection("Customer_request")
+        .doc(widget.doc_id)
+        .update({ 'Payment': 5,"complaint":Complaint_ctrl,"Experience":Experience_ctrl});
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return Customer_Home();
+      },
+    ));
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,13 +113,13 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Worker Name',
+                                        widget.Name,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        'Preferred Work',
+                                        widget.Work,
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ],
@@ -112,6 +142,7 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: TextFormField(
+                            onChanged: (value) => Complaint_ctrl = value,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -136,6 +167,8 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: TextFormField(
+                            onChanged: (value) => Experience_ctrl = value,
+
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -145,31 +178,7 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
-                        SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            "Write Any Feedback",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17.sp),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 40.h),
                         Column(
                           children: [
                             Padding(
@@ -177,27 +186,39 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Make Payments...",
+                                    "Make Payment...",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 28.sp,
+                                        fontSize: 25.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 100, right: 100,top: 10),
+                              padding: const EdgeInsets.only(
+                                  left: 100, right: 100, top: 30),
                               child: Container(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 20,right: 30),
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 30),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(Icons.currency_rupee,size: 40,),
-                                    Text("2000",style: TextStyle(color: Colors.black,fontSize: 35,fontWeight: FontWeight.bold),)
-                                  ],),
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        Icons.currency_rupee,
+                                        size: 40,
+                                      ),
+                                      Text(
+                                        widget.Amount,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 35,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 height: 70.h,
                                 width: 180.w,
@@ -208,24 +229,38 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsets.only(left: 100, right: 100,top: 20),
-                              child: Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 49,right: 30),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Pay",style: TextStyle(color: Colors.white,fontSize: 25.sp,fontWeight: FontWeight.bold),)
-                                    ],
+                              padding: const EdgeInsets.only(
+                                  left: 100, right: 100, top: 40),
+                              child: InkWell(
+                                onTap: () {
+                                  Pay();
+                                },
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 49, right: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Center(
+                                            child: Text(
+                                          "Pay",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25.sp,
+                                              fontWeight: FontWeight.bold),
+                                        ))
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                height: 50.h,
-                                width: 150.w,
-                                decoration: BoxDecoration(
+                                  height: 50.h,
+                                  width: 150.w,
+                                  decoration: BoxDecoration(
                                     color: Colors.black,
                                     borderRadius: BorderRadius.circular(10.r),
-                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],

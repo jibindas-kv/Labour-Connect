@@ -5,6 +5,8 @@ import 'package:labour_connect/Customer/Book_worker.dart';
 import 'package:labour_connect/Customer/Customer_Navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Customer_Workerbillpayment.dart';
+
 class Customer_Home extends StatefulWidget {
   const Customer_Home({super.key});
 
@@ -374,21 +376,18 @@ class _StatusState extends State<Status> {
                                 child: Status["Payment"] == 3
                                     ? InkWell(
                                         onTap: () {
-                                          // Navigator.push(context,
-                                          //     MaterialPageRoute(
-                                          //       builder: (context) {
-                                          //         return User_mechanic_bill(
-                                          //             id: doc.id,
-                                          //             Amount: Mech_req[
-                                          //             "Amount"],
-                                          //             Name: Mech_req[
-                                          //             "Mech_name"],
-                                          //             Experiance: Mech_req[
-                                          //             "Mech_experiance"],
-                                          //             Profile: Mech_req[
-                                          //             "Mech_profile"]);
-                                          //       },
-                                          //     ));
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                            builder: (context) {
+                                              return Customer_Billpayment(
+                                                  id: Status["Customer_id"],
+                                                  doc_id :Status["customer_request_id"],
+                                                  Amount: Status["Amount"],
+                                                  Name: Status["Worker_Name"],
+                                                  Work:
+                                                      Status["NeededService"],);
+                                            },
+                                          ));
                                         },
                                         child: Container(
                                           height: 40.h,
