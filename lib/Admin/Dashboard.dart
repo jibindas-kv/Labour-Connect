@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -95,11 +96,25 @@ class _DashboardState extends State<Dashboard> {
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "35",
-                                          style: TextStyle(
-                                              fontSize: 60.sp,
-                                              fontWeight: FontWeight.w900),
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("CustomerLogin")
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            }
+                                            final count =
+                                                snapshot.data?.docs.length ?? 0;
+                                            return Text(
+                                              "$count",
+                                              style: TextStyle(
+                                                fontSize: 60.sp,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            );
+                                          },
                                         ),
                                         Text(
                                           "Customers",
@@ -126,11 +141,25 @@ class _DashboardState extends State<Dashboard> {
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "28",
-                                          style: TextStyle(
-                                              fontSize: 60.sp,
-                                              fontWeight: FontWeight.w900),
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("WorkerLogin")
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            }
+                                            final count =
+                                                snapshot.data?.docs.length ?? 0;
+                                            return Text(
+                                              "$count",
+                                              style: TextStyle(
+                                                fontSize: 60.sp,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            );
+                                          },
                                         ),
                                         Text(
                                           "Workers",
@@ -165,11 +194,24 @@ class _DashboardState extends State<Dashboard> {
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "62",
-                                          style: TextStyle(
-                                              fontSize: 60.sp,
-                                              fontWeight: FontWeight.w900),
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("Customer_request")
+                                              .where("Payment", whereIn: [4, 5]) // Filter for Payment == 4 or 5
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                              return CircularProgressIndicator();
+                                            }
+                                            final count = snapshot.data?.docs.length ?? 0;
+                                            return Text(
+                                              "$count",
+                                              style: TextStyle(
+                                                fontSize: 60.sp,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            );
+                                          },
                                         ),
                                         Text(
                                           "Payments",

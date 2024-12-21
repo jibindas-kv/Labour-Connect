@@ -15,7 +15,16 @@ class Admin_Customer_List extends StatefulWidget {
 class _Admin_Customer_ListState extends State<Admin_Customer_List> {
   // Reference to the Firestore collection
   final CollectionReference _customersRef =
-  FirebaseFirestore.instance.collection('CustomerLogin'); // Replace 'customers' with your collection name
+  FirebaseFirestore.instance.collection('CustomerLogin');
+
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +44,39 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
+              style: TextStyle(color: Colors.black, fontSize: 16.sp),
+              decoration: InputDecoration(
+                hintText: "Search by name...",
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                filled: true,
+                fillColor: Colors.white,
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
             child: Stack(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.r),
-                          topRight: Radius.circular(20.r))),
-                  height: 731.h,
-                  width: double.infinity,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.r),
+                      topRight: Radius.circular(20.r),
+                    ),
+                  ),
                   child: StreamBuilder(
                     stream: _customersRef.snapshots(),
                     builder: (context, snapshot) {
@@ -60,7 +91,19 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
                           ),
                         );
                       }
-                      final customers = snapshot.data!.docs;
+                      final customers = snapshot.data!.docs.where((customer) {
+                        final name = customer["Name"]?.toString().toLowerCase() ?? '';
+                        return name.contains(_searchQuery);
+                      }).toList();
+
+                      if (customers.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No customers match your search",
+                            style: TextStyle(color: Colors.grey, fontSize: 18.sp),
+                          ),
+                        );
+                      }
 
                       return ListView.builder(
                         itemCount: customers.length,
@@ -73,7 +116,13 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
-                                    return Admin_CustomerListView();
+                                    return Admin_CustomerListView(
+                                      Name: customer["Name"],
+                                      Email: customer["Email"],
+                                      Phn_no: customer["Phn_no"],
+                                      Place: customer["Place"],
+                                      Address: customer["Address"],
+                                    );
                                   },
                                 ));
                               },
@@ -91,13 +140,13 @@ class _Admin_Customer_ListState extends State<Admin_Customer_List> {
                                     MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "${customer["Name"] ?? ""}", // Field name in Firestore
+                                        "${customer["Name"] ?? ""}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w800,
                                             fontSize: 16.sp),
                                       ),
                                       Text(
-                                          "${customer["Date"] ?? ""}", // Assuming 'createdAt' is a field in your document
+                                        "${customer["Date"] ?? ""}",
                                         style: TextStyle(
                                             color: Colors.grey[700],
                                             fontSize: 12.sp),

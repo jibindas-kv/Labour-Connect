@@ -2,7 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Transcation_Details extends StatefulWidget {
-  const Transcation_Details({super.key});
+  const Transcation_Details(
+      {super.key,
+      required this.Customer_name,
+      required this.Customer_Phn_no,
+      required this.Amount,
+      required this.Payment,
+      required this.Worker_name,
+      required this.Requsted_Work,
+      required this.Date,
+      required this.Time});
+
+  final Customer_name;
+  final Customer_Phn_no;
+  final Amount;
+  final Payment;
+  final Worker_name;
+  final Requsted_Work;
+  final Date;
+  final Time;
 
   @override
   State<Transcation_Details> createState() => _Transcation_DetailsState();
@@ -49,9 +67,11 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                             borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           children: [
-                            SizedBox(height: 10.sp,),
+                            SizedBox(
+                              height: 10.sp,
+                            ),
                             Text(
-                              " FROM CUSTOMER NAME",
+                              " FROM ${widget.Customer_name} ",
                               style: TextStyle(
                                   fontSize: 20.sp,
                                   color: Colors.black,
@@ -63,7 +83,7 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "Phone number",
+                                      widget.Customer_Phn_no,
                                       style: TextStyle(
                                           fontSize: 18,
                                           color: Colors.black,
@@ -83,7 +103,7 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                                       size: 59,
                                     ),
                                     Text(
-                                      "527",
+                                      widget.Amount,
                                       style: TextStyle(
                                           fontSize: 59.sp,
                                           color: Colors.black,
@@ -130,107 +150,128 @@ class _Transcation_DetailsState extends State<Transcation_Details> {
                             fontWeight: FontWeight.bold),
                       ),
                       Row(
-                        children: [Text(
-                          "Name",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            widget.Worker_name,
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Requested Work",
-                          style: TextStyle(
-                              fontSize: 19.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),],
+                        children: [
+                          Text(
+                            "Requested Work",
+                            style: TextStyle(
+                                fontSize: 19.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Painting",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            widget.Requsted_Work,
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Payment method",
-                          style: TextStyle(
-                              fontSize: 19.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),],
+                        children: [
+                          Text(
+                            "Payment method",
+                            style: TextStyle(
+                                fontSize: 19.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "UPI",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            "UPI",
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Date",
-                          style: TextStyle(
-                              fontSize: 19.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),],
+                        children: [
+                          Text(
+                            "Date",
+                            style: TextStyle(
+                                fontSize: 19.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "11/01/2024",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            widget.Date,
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Time",
-                          style: TextStyle(
-                              fontSize: 19.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),],
+                        children: [
+                          Text(
+                            "Time",
+                            style: TextStyle(
+                                fontSize: 19.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "1:10",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            widget.Time,
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "Transcation ID",
-                          style: TextStyle(
-                              fontSize: 19.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),],
+                        children: [
+                          Text(
+                            "Transcation ID",
+                            style: TextStyle(
+                                fontSize: 19.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       Row(
-                        children: [Text(
-                          "SXGHXXXX678",
-                          style: TextStyle(
-                              fontSize: 17.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal),
-                        ),],
+                        children: [
+                          Text(
+                            "SXGHXXXX678",
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-
                 ),
               ],
             ),
