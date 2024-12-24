@@ -143,7 +143,7 @@ class _DashboardState extends State<Dashboard> {
                                       children: [
                                         StreamBuilder<QuerySnapshot>(
                                           stream: FirebaseFirestore.instance
-                                              .collection("WorkerLogin")
+                                              .collection("WorkerLogin").where("approvel", isEqualTo: 1)
                                               .snapshots(),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==

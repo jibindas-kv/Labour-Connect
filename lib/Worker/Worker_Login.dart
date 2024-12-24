@@ -32,8 +32,9 @@ class _Worker_LoginState extends State<Worker_Login> {
       try {
         // Fetch the user document from Firestore first
         QuerySnapshot userSnapshot = await _firestore
-            .collection('WorkerLogin') // Ensure this is the correct collection
+            .collection('WorkerLogin')
             .where('Email', isEqualTo: email)
+            .where('approvel', isEqualTo: 1)
             .limit(1) // Limit to 1 result
             .get();
         if (userSnapshot.docs.isNotEmpty) {

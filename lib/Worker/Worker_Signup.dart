@@ -24,20 +24,32 @@ class _Worker_SignupState extends State<Worker_Signup> {
   String SpecializedWork = "";
   String Password = "";
 
-  final List<String> _works = [
-    'Plumbing',
-    'Wiring',
-    'Carpenter',
-    'Designing',
-    'Cleaning',
-    'Washing',
-    'Select'
-  ];
-  String Work = 'Select';
+  List<String> workCategories = []; // List to store fetched categories
+  String Work = 'Select'; // Default dropdown value
 
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWorkCategories(); // Fetch categories when the page loads
+  }
+
+  // Fetch work categories from Firestore
+  void _fetchWorkCategories() async {
+    try {
+      var querySnapshot = await _firestore.collection('WorkCategories').get();
+      setState(() {
+        workCategories =
+            querySnapshot.docs.map((doc) => doc['category'] as String).toList();
+        workCategories.insert(0, 'Select'); // Add 'Select' option at the start
+      });
+    } catch (e) {
+      print("Error fetching categories: $e");
+    }
+  }
 
   void RegisterWorker() async {
     if (formKey.currentState!.validate()) {
@@ -46,7 +58,7 @@ class _Worker_SignupState extends State<Worker_Signup> {
       });
       try {
         UserCredential userCredential =
-        await _auth.createUserWithEmailAndPassword(
+            await _auth.createUserWithEmailAndPassword(
           email: Email,
           password: Password,
         );
@@ -64,13 +76,17 @@ class _Worker_SignupState extends State<Worker_Signup> {
           'SpecializedWork': SpecializedWork,
           'Role': "Worker",
           'status': 0,
-          "Date": date
+          "Date": date,
+          "approvel": 0,
         });
 
         // Navigate to Worker Login page
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => Worker_Login(),
-        ));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Worker_Login(),
+          ),
+        );
       } catch (e) {
         _showErrorDialog("Registration failed: ${e.toString()}");
       } finally {
@@ -140,7 +156,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
                       },
                     ),
                     SizedBox(height: 15.h),
-                    Text("Email", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Email",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextFormField(
                       onChanged: (value) => Email = value,
                       decoration: InputDecoration(
@@ -182,7 +199,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
                       },
                     ),
                     SizedBox(height: 15.h),
-                    Text("Place", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Place",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextFormField(
                       onChanged: (value) => Place = value,
                       decoration: InputDecoration(
@@ -200,7 +218,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
                       },
                     ),
                     SizedBox(height: 15.h),
-                    Text("Address", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Address",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextFormField(
                       onChanged: (value) => Address = value,
                       decoration: InputDecoration(
@@ -234,7 +253,7 @@ class _Worker_SignupState extends State<Worker_Signup> {
                           value: Work,
                           isExpanded: true,
                           icon: const Icon(Icons.arrow_drop_down),
-                          items: _works.map((String value) {
+                          items: workCategories.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -252,7 +271,8 @@ class _Worker_SignupState extends State<Worker_Signup> {
                       ),
                     ),
                     SizedBox(height: 15.h),
-                    Text("Password", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("Password",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextFormField(
                       onChanged: (value) => Password = value,
                       obscureText: true,

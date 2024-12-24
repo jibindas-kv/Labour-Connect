@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,6 +10,85 @@ class Admin_Workers_Work_Add extends StatefulWidget {
 }
 
 class _Admin_Workers_Work_AddState extends State<Admin_Workers_Work_Add> {
+  final _firestore = FirebaseFirestore.instance;
+  final TextEditingController _categoryController = TextEditingController();
+
+  List<String> workCategories = []; // List to hold the fetched work categories
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWorkCategories(); // Fetch existing categories when the screen loads
+  }
+
+  // Fetch work categories from Firestore
+  void _fetchWorkCategories() async {
+    try {
+      var querySnapshot = await _firestore.collection('WorkCategories').get();
+      setState(() {
+        workCategories = querySnapshot.docs.map((doc) => doc['category'] as String).toList();
+      });
+    } catch (e) {
+      print("Error fetching categories: $e");
+    }
+  }
+
+  // Show dialog to add a new work category
+  void _showAddCategoryDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text("Add Work Category"),
+          content: TextField(
+            controller: _categoryController,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey.shade300,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              hintText: 'Enter Category Name',
+              hintStyle: TextStyle(
+                color: Colors.grey.shade600,
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                String newCategory = _categoryController.text.trim();
+                if (newCategory.isNotEmpty) {
+                  try {
+                    // Save the new category to Firestore
+                    await _firestore.collection('WorkCategories').add({
+                      'category': newCategory,
+                    });
+
+                    _categoryController.clear();
+                    Navigator.pop(context);
+                    _fetchWorkCategories(); // Fetch updated list
+                  } catch (e) {
+                    print("Error adding category: $e");
+                  }
+                }
+              },
+              child: const Text("Add"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +105,7 @@ class _Admin_Workers_Work_AddState extends State<Admin_Workers_Work_Add> {
               size: 40.sp,
               color: Colors.white,
             ),
-            onPressed: () {
-              print("Pressed");
-            },
+            onPressed: _showAddCategoryDialog, // Show the dialog on press
           ),
         ),
       ),
@@ -40,19 +118,21 @@ class _Admin_Workers_Work_AddState extends State<Admin_Workers_Work_Add> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.admin_panel_settings_outlined,
-                      color: Colors.white,
-                      size: 40.sp,
-                    )),
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.admin_panel_settings_outlined,
+                    color: Colors.white,
+                    size: 40.sp,
+                  ),
+                ),
                 IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                      size: 36.sp,
-                    ))
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                    size: 36.sp,
+                  ),
+                ),
               ],
             ),
           ),
@@ -69,7 +149,7 @@ class _Admin_Workers_Work_AddState extends State<Admin_Workers_Work_Add> {
                   height: 770.h,
                   width: double.infinity,
                   child: ListView.builder(
-                    itemCount: 5,
+                    itemCount: workCategories.length, // Use dynamic list
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(
@@ -86,7 +166,7 @@ class _Admin_Workers_Work_AddState extends State<Admin_Workers_Work_Add> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Painting",
+                                  workCategories[index],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 17.sp),

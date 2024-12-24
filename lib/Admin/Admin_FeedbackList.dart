@@ -41,9 +41,11 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                   height: 731.h,
                   width: double.infinity,
                   child: StreamBuilder(
-                    stream:FirebaseFirestore.instance
-        .collection("CustomerLogin")
-        .snapshots(),
+                    stream: FirebaseFirestore.instance
+                        .collection("Customer_request")
+                        .where("Feedback", isNotEqualTo: "null")
+
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -53,17 +55,27 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                       }
                       final Feedbacklist = snapshot.data?.docs ?? [];
                       return ListView.builder(
-                        itemCount: Feedbacklist.length ,
+                        itemCount: Feedbacklist.length,
                         itemBuilder: (context, index) {
                           final doc = Feedbacklist[index];
-                          final feedbacklt= doc .data() as Map<String, dynamic>;
+                          final feedbacklt = doc.data() as Map<String, dynamic>;
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 10, right: 10, bottom: 10),
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return Admin_Feedback_View();},));
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return Admin_Feedback_View(
+                                      customer_name:
+                                          feedbacklt["Customer_user_name"],
+                                      worker_name: feedbacklt["Worker_Name"],
+                                      needed_service:
+                                          feedbacklt["NeededService"],
+                                      feedback: feedbacklt["Feedback"],
+                                    );
+                                  },
+                                ));
                               },
                               child: Container(
                                 height: 50.h,
@@ -72,12 +84,14 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                                   borderRadius: BorderRadius.circular(20.r),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 10, right: 15),
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 15),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "${feedbacklt["Name"] ?? ""}",
+                                        "${feedbacklt["Customer_user_name"] ?? ""}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w800,
                                             fontSize: 16.sp),
@@ -85,7 +99,8 @@ class _Admin_FeedbackListState extends State<Admin_FeedbackList> {
                                       Text(
                                         "${feedbacklt["Date"] ?? ""}",
                                         style: TextStyle(
-                                            color: Colors.grey[700], fontSize: 12.sp),
+                                            color: Colors.grey[700],
+                                            fontSize: 12.sp),
                                       ),
                                     ],
                                   ),

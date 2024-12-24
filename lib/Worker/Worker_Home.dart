@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:labour_connect/Worker/Worker_Authgate.dart';
+import 'package:labour_connect/Worker/Worker_Notification.dart';
 import 'package:labour_connect/Worker/Worker_Profile.dart';
 import 'package:labour_connect/Worker/Worker_Work_Acc_Rej.dart';
 import 'package:labour_connect/Worker/Worker_Work_Status.dart';
@@ -66,8 +67,9 @@ class _Worker_HomeState extends State<Worker_Home> {
                         // Toggle the state when the menu option is selected
                         setState(() {
                           isOnline = !isOnline;
-                        });
-                        // Update status in Firestore
+                        }
+                        );
+
                         await updateWorkerStatus(isOnline ? 1 : 0);
 
                         // Show a Snackbar indicating the new status
@@ -84,14 +86,23 @@ class _Worker_HomeState extends State<Worker_Home> {
                                     .red, // Set background color based on status
                           ),
                         );
+                      }else if(value==3){
+                        {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Worker_Notification();
+                            },
+                          ));
+                        }
                       }
                     },
                     itemBuilder: (BuildContext context) {
                       return [
+
                         PopupMenuItem<int>(
-                          value: 1,
+                          value: 3,
                           child: Text(
-                            'Logout',
+                            'Notifications',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -102,6 +113,14 @@ class _Worker_HomeState extends State<Worker_Home> {
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
+                        PopupMenuItem<int>(
+                          value: 1,
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+
                       ];
                     },
                   ),

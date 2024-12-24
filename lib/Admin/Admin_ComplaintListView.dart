@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Admin_Feedback_View extends StatefulWidget {
-  const Admin_Feedback_View({
+class Complaint_Listview extends StatefulWidget {
+  const Complaint_Listview({
     super.key,
-    required this.customer_name,
-    required this.worker_name,
-    required this.needed_service,
+    required this.customerName,
+    required this.workerName,
+    required this.neededService,
     required this.feedback,
   });
 
-  final String? customer_name;
-  final String? worker_name;
-  final String? needed_service;
+  final String? customerName;
+  final String? workerName;
+  final String? neededService;
   final String? feedback;
 
   @override
-  State<Admin_Feedback_View> createState() => _Admin_Feedback_ViewState();
+  State<Complaint_Listview> createState() => _Complaint_ListviewState();
 }
 
-class _Admin_Feedback_ViewState extends State<Admin_Feedback_View> {
+class _Complaint_ListviewState extends State<Complaint_Listview> {
   late String customerName;
   late String workerName;
   late String neededService;
@@ -33,13 +33,13 @@ class _Admin_Feedback_ViewState extends State<Admin_Feedback_View> {
   }
 
   Future<void> _fetchData() async {
-    // Simulating a data fetching delay
-    await Future.delayed(const Duration(seconds: 2));
+    // Simulate data fetching delay
+    await Future.delayed(Duration(seconds: 2));
     setState(() {
-      customerName = widget.customer_name! ;
-      workerName = widget.worker_name! ;
-      neededService = widget.needed_service! ;
-      feedback = widget.feedback! ;
+      customerName = widget.customerName! ;
+      workerName = widget.workerName! ;
+      neededService = widget.neededService! ;
+      feedback = widget.feedback!;
       isLoading = false;
     });
   }
@@ -59,7 +59,7 @@ class _Admin_Feedback_ViewState extends State<Admin_Feedback_View> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Feedback Details",
+              "Complaint Details",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -91,7 +91,7 @@ class _Admin_Feedback_ViewState extends State<Admin_Feedback_View> {
                       SizedBox(height: 16),
                       _buildDetailField("Preferred Work", neededService),
                       SizedBox(height: 16),
-                      _buildDetailField("Feedback", feedback, maxLines: 4),
+                      _buildDetailField("Complaint", feedback, maxLines: 4),
                     ],
                   ),
                 )

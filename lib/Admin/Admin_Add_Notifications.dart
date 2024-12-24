@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:labour_connect/Admin/Admin_Notification.dart';
 
 class Admin_Add_Notifications extends StatefulWidget {
@@ -10,14 +11,47 @@ class Admin_Add_Notifications extends StatefulWidget {
 }
 
 class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
-  @override
-  final List<String> _notify = [
-    'Worker',
-    'Customer',
-    'All'
-  ];
-
+  final List<String> _notify = ['Worker', 'Customer', 'All'];
   String Deafault = 'All';
+  final TextEditingController headingController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
+
+  Future<void> _addNotification() async {
+    final String heading = headingController.text.trim();
+    final String content = contentController.text.trim();
+
+    if (heading.isEmpty || content.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection('notifications').add({
+        'heading': heading,
+        'content': content,
+        'target': Deafault,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Notification added successfully!')),
+      );
+
+      // Navigate to Admin Notification Screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Admin_Notification()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding notification: $e')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -40,13 +74,15 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.r),
-                          topRight: Radius.circular(20.r))),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.r),
+                      topRight: Radius.circular(20.r),
+                    ),
+                  ),
                   height: 731.h,
                   width: double.infinity,
-                  child:Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 28.h),
@@ -58,14 +94,15 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: TextFormField(
+                          controller: headingController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey.shade300,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
-                              borderSide: BorderSide.none, // Removes border outline
+                              borderSide: BorderSide.none,
                             ),
                           ),
                         ),
@@ -79,8 +116,9 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: TextFormField(
+                          controller: contentController,
                           maxLines: 4,
                           decoration: InputDecoration(
                             filled: true,
@@ -101,7 +139,7 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20,right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Container(
                           height: 55,
                           width: 400.w,
@@ -142,26 +180,29 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 60.h,),
+                      SizedBox(height: 60.h),
                       Center(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                              return Admin_Notification();
-                            },));
-                          },
+                          onTap: _addNotification,
                           child: Container(
                             height: 50.h,
                             width: 150.w,
-                            decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(15.r)),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
                             child: Center(
                               child: Text(
                                 "Done",
-                                style: TextStyle(fontSize: 20.sp, color: Colors.white,fontWeight: FontWeight.w900),
+                                style: TextStyle(
+                                  fontSize: 20.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                ),
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ),
                     ],
                   ),

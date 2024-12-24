@@ -74,6 +74,7 @@ class _Admin_Worker_ListState extends State<Admin_Worker_List> {
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection("WorkerLogin")
+                        .where("approvel", isEqualTo: 1)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

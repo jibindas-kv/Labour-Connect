@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:labour_connect/Admin/Approval_Page.dart';
 
 class Admin_Rejected_List extends StatefulWidget {
@@ -12,13 +11,6 @@ class Admin_Rejected_List extends StatefulWidget {
 }
 
 class _Admin_Rejected_ListState extends State<Admin_Rejected_List> {
-  String formatDate(Timestamp timestamp) {
-    return DateFormat('dd/MM/yyyy').format(timestamp.toDate());
-  }
-  // Reference to the Firestore collection
-  final CollectionReference workersRef =
-  FirebaseFirestore.instance.collection('WorkerLogin');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +20,7 @@ class _Admin_Rejected_ListState extends State<Admin_Rejected_List> {
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Text(
-              "Rejected",
+              "Rejects",
               style: TextStyle(
                 fontSize: 45.sp,
                 color: Colors.white,
@@ -42,49 +34,60 @@ class _Admin_Rejected_ListState extends State<Admin_Rejected_List> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.r),
-                      topRight: Radius.circular(20.r),
-                    ),
-                  ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.r),
+                          topRight: Radius.circular(20.r))),
                   height: 731.h,
                   width: double.infinity,
                   child: StreamBuilder<QuerySnapshot>(
-                    stream: workersRef
-                        .where('status', isEqualTo: 'rejected') // Filter by status
+                    stream: FirebaseFirestore.instance
+                        .collection("WorkerLogin")
+                        .where("approvel", isEqualTo: 2)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return Center(child: CircularProgressIndicator(color: Colors.black));
                       }
-                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            "No rejected workers found",
-                            style: TextStyle(color: Colors.grey, fontSize: 18.sp),
+                            "Error: ${snapshot.error}",
+                            style: TextStyle(color: Colors.red, fontSize: 16.sp),
                           ),
                         );
                       }
-                      final rejectedWorkers = snapshot.data!.docs;
-
+                      final workers = snapshot.data?.docs ?? [];
+                      if (workers.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No Requests Found",
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }
                       return ListView.builder(
-                        itemCount: rejectedWorkers.length,
+                        itemCount: workers.length,
                         itemBuilder: (context, index) {
-                          final worker = rejectedWorkers[index];
-                          final name = worker['Name'];
-                          final rejectedAt = worker['rejectedAt'] ?? 'Unknown';
-
+                          final worker = workers[index].data() as Map<String, dynamic>;
                           return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 10, bottom: 10),
+                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return Approval_Page();
-                                  },
-                                ));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return Approval_Page(
+                                    worker_id:worker["worker_id"],
+                                    worker_name:worker["Name"],
+                                    worker_phn:worker["Phn_no"],
+                                    worker_email:worker["Email"],
+                                    worker_category:worker["SpecializedWork"],
+                                    worker_date:worker["Date"],
+
+                                  );
+                                }));
                               },
                               child: Container(
                                 height: 50.h,
@@ -93,27 +96,19 @@ class _Admin_Rejected_ListState extends State<Admin_Rejected_List> {
                                   borderRadius: BorderRadius.circular(20.r),
                                 ),
                                 child: Padding(
-                                  padding:
-                                  const EdgeInsets.only(left: 10, right: 15),
+                                  padding: const EdgeInsets.only(left: 10, right: 15),
                                   child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                  Text(
-                                  formatDate(worker['rejectedAt']),
-                                  style: TextStyle(color: Colors.grey[700], fontSize: 12.sp),
-                                ),
                                       Text(
-                                        name, // Worker name
+                                        "${worker["Name"] }",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 16.sp),
+                                            fontWeight: FontWeight.w800, fontSize: 16.sp),
                                       ),
                                       Text(
-                                        rejectedAt,
+                                        "${worker["Date"]}",
                                         style: TextStyle(
-                                            color: Colors.grey[700],
-                                            fontSize: 12.sp),
+                                            color: Colors.grey[700], fontSize: 12.sp),
                                       ),
                                     ],
                                   ),
