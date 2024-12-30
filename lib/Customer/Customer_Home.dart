@@ -300,21 +300,21 @@ class _WorkersState extends State<Workers> {
                                 Text(
                                   worker['Name'] ?? 'Unknown',
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   worker['SpecializedWork'] ?? 'N/A',
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   worker['Place'] ?? 'N/A',
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -507,7 +507,7 @@ class _StatusState extends State<Status> {
                                         },
                                         child: Container(
                                           height: 40.h,
-                                          width: 130.w,
+                                          width: 110.w,
                                           decoration: BoxDecoration(
                                               color: Colors.green,
                                               borderRadius:
@@ -529,7 +529,7 @@ class _StatusState extends State<Status> {
                                         },
                                         child: Container(
                                           height: 40.h,
-                                          width: 130.w,
+                                          width: 110.w,
                                           decoration: BoxDecoration(
                                               color: Colors.red,
                                               borderRadius:
@@ -565,7 +565,7 @@ class _StatusState extends State<Status> {
                                           : Status["Work_status"] == 0
                                           ? Container(
                                         height: 40.h,
-                                        width: 130.w,
+                                        width: 110.w,
                                         decoration: BoxDecoration(
                                             color: Colors.grey,
                                             borderRadius:
@@ -583,7 +583,7 @@ class _StatusState extends State<Status> {
                                           : Status["Work_status"] == 1
                                           ? Container(
                                         height: 40.h,
-                                        width: 130.w,
+                                        width: 110.w,
                                         decoration: BoxDecoration(
                                             color: Colors.green,
                                             borderRadius:

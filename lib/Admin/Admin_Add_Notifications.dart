@@ -153,7 +153,7 @@ class _Admin_Add_NotificationsState extends State<Admin_Add_Notifications> {
                               dropdownColor: Colors.grey.shade300,
                               value: Deafault,
                               icon: Padding(
-                                padding: const EdgeInsets.only(left: 250),
+                                padding: const EdgeInsets.only(left: 223),
                                 child: Icon(
                                   Icons.arrow_drop_down,
                                   size: 40,

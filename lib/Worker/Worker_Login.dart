@@ -19,51 +19,44 @@ class _Worker_LoginState extends State<Worker_Login> {
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
+  bool obscureText = true; // Toggle for password visibility
+
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  // Worker login function after checking role in Firestore first
+  // Worker login function
   void loginWorker() async {
     if (formKey.currentState!.validate()) {
       setState(() {
-        isLoading = true; // Start loading state
+        isLoading = true;
       });
 
       try {
-        // Fetch the user document from Firestore first
         QuerySnapshot userSnapshot = await _firestore
             .collection('WorkerLogin')
             .where('Email', isEqualTo: email)
             .where('approvel', isEqualTo: 1)
-            .limit(1) // Limit to 1 result
+            .limit(1)
             .get();
+
         if (userSnapshot.docs.isNotEmpty) {
           id = userSnapshot.docs[0].id;
           SharedPreferences data = await SharedPreferences.getInstance();
           data.setString('Worker_id', id);
-          print("///////////////////////////////////////");
-          print(id);
-          print("///////////////////////////////////////");
         }
 
         if (userSnapshot.docs.isEmpty) {
-          // No user document found with this email
           _showErrorDialog("No worker record found with this email.");
         } else {
-          // Get user document and verify role
           DocumentSnapshot userDoc = userSnapshot.docs.first;
           String role = userDoc.get('Role');
 
-          // Verify if the user is a Worker
           if (role == 'Worker') {
-            // Now authenticate the user with Firebase
             try {
-              UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+              await _auth.signInWithEmailAndPassword(
                 email: email,
                 password: password,
               );
-
-              // Navigate to Worker Home page if login is successful
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -74,23 +67,19 @@ class _Worker_LoginState extends State<Worker_Login> {
               _showErrorDialog("Login failed. Please check your credentials.");
             }
           } else {
-            // Role mismatch, show error and sign out
             _showErrorDialog("This account is not registered as a Worker.");
           }
         }
       } catch (e) {
-        // Catch Firestore or other errors
         _showErrorDialog("An error occurred. Please try again.");
-        print("Error: $e");
       } finally {
         setState(() {
-          isLoading = false; // Stop loading state
+          isLoading = false;
         });
       }
     }
   }
 
-  // Error dialog to display errors
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -128,12 +117,13 @@ class _Worker_LoginState extends State<Worker_Login> {
                   ),
                 ),
                 SizedBox(height: 40.h),
-                Padding(
-                  padding: const EdgeInsets.only(right: 330),
-                  child: Text(
-                    "Email",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Email",
+                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   onChanged: (value) => email = value,
@@ -155,22 +145,33 @@ class _Worker_LoginState extends State<Worker_Login> {
                   },
                 ),
                 SizedBox(height: 10.h),
-                Padding(
-                  padding: const EdgeInsets.only(right: 280),
-                  child: Text(
-                    "Password",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Password",
+                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   onChanged: (value) => password = value,
-                  obscureText: true,
+                  obscureText: obscureText,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade300,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
                     ),
                   ),
                   validator: (value) {
@@ -239,7 +240,7 @@ class _Worker_LoginState extends State<Worker_Login> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Worker_Signup(), // Replace with your signup screen
+                              builder: (context) => Worker_Signup(),
                             ),
                           );
                         },

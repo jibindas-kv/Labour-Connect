@@ -70,7 +70,7 @@ class _Customer_Profile_ViewState extends State<Customer_Profile_View> {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 360, top: 5),
+                    padding: const EdgeInsets.only(left: 320, top: 5),
                     child: InkWell(
                       onTap: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(

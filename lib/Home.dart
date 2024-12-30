@@ -23,7 +23,9 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(height: 80.h,),
+          SizedBox(
+            height: 80.h,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 80),
             child: Row(
@@ -51,7 +53,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 170),
+            padding: const EdgeInsets.only(left: 150),
             child: Row(
               children: [
                 Text(
@@ -63,7 +65,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 23),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     "ONNECT",
                     style: TextStyle(
@@ -79,16 +81,19 @@ class _HomeState extends State<Home> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              SizedBox(height: 40.h,),
+              SizedBox(
+                height: 40.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Admin_Authgate();
-                      },));
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_Authgate();
+                        },
+                      ));
                     },
                     child: Container(
                       height: 70.h,
@@ -121,15 +126,19 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(height: 50.h,),
+              SizedBox(
+                height: 50.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Customer_Authgate();
-                      },));
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Customer_Authgate();
+                        },
+                      ));
                     },
                     child: Container(
                       height: 70.h,
@@ -137,40 +146,41 @@ class _HomeState extends State<Home> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
                           color: Colors.black),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Customer",
-                              style: TextStyle(
-                                fontSize: 25.sp,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios_sharp,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "  Customer",
+                            style: TextStyle(
+                              fontSize: 25.sp,
                               color: Colors.white,
-                              size: 25.sp,
-                            )
-                          ],
-                        ),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            color: Colors.white,
+                            size: 25.sp,
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 50.h,),
+              SizedBox(
+                height: 50.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Worker_Authgate();
-                      },));
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Worker_Authgate();
+                        },
+                      ));
                     },
                     child: Container(
                       height: 70.h,

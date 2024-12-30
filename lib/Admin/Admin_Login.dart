@@ -18,6 +18,7 @@ class _Admin_LoginState extends State<Admin_Login> {
   String email = '';
   String password = '';
   bool isLoading = false;
+  bool passwordVisible = true; // For toggling password visibility
   final formKey = GlobalKey<FormState>();
 
   // Admin login method
@@ -95,12 +96,13 @@ class _Admin_LoginState extends State<Admin_Login> {
                 ),
               ),
               SizedBox(height: 40.h),
-              Padding(
-                padding: const EdgeInsets.only(right: 330),
-                child: Text(
-                  "Email",
-                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                ),
+              Row(
+                children: [
+                  Text(
+                    "Email",
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               Form(
                 key: formKey,
@@ -124,16 +126,17 @@ class _Admin_LoginState extends State<Admin_Login> {
                       ),
                     ),
                     SizedBox(height: 30.h),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 280),
-                      child: Text(
-                        "Password",
-                        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Password",
+                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     TextFormField(
                       onChanged: (value) => password = value,
-                      obscureText: true,
+                      obscureText: passwordVisible, // Controlled by passwordVisible
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -146,6 +149,16 @@ class _Admin_LoginState extends State<Admin_Login> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
                           borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
                         ),
                       ),
                     ),

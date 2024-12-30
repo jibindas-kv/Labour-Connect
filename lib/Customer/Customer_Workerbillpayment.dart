@@ -6,11 +6,11 @@ import 'package:labour_connect/Customer/Customer_Home.dart';
 class Customer_Billpayment extends StatefulWidget {
   const Customer_Billpayment(
       {super.key,
-      required this.id,
-      required this.Amount,
-      required this.Name,
-      required this.Work,
-      required this.doc_id});
+        required this.id,
+        required this.Amount,
+        required this.Name,
+        required this.Work,
+        required this.doc_id});
   final id;
   final Amount;
   final Name;
@@ -22,14 +22,16 @@ class Customer_Billpayment extends StatefulWidget {
 }
 
 class _Customer_BillpaymentState extends State<Customer_Billpayment> {
-  String ? Complaint_ctrl ;
-  String ?Experience_ctrl;
+  String? Complaint_ctrl;
+  String? Experience_ctrl;
+  String? Amount_ctrl;
 
   Future<void> Pay() async {
-    FirebaseFirestore.instance
-        .collection("Customer_request")
-        .doc(widget.doc_id)
-        .update({ 'Payment': 5,"complaint":Complaint_ctrl,"Experience":Experience_ctrl});
+    FirebaseFirestore.instance.collection("Customer_request").doc(widget.doc_id).update({
+      'Payment': double.parse(Amount_ctrl ?? "0"),
+      "complaint": Complaint_ctrl,
+      "Experience": Experience_ctrl
+    });
     Navigator.push(context, MaterialPageRoute(
       builder: (context) {
         return Customer_Home();
@@ -37,7 +39,11 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
     ));
   }
 
-
+  @override
+  void initState() {
+    super.initState();
+    Amount_ctrl = widget.Amount;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +111,12 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                                     decoration: BoxDecoration(
                                         color: Colors.black,
                                         borderRadius:
-                                            BorderRadius.circular(15.r)),
+                                        BorderRadius.circular(15.r)),
                                   ),
                                   SizedBox(width: 16.w),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         widget.Name,
@@ -168,7 +174,6 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: TextFormField(
                             onChanged: (value) => Experience_ctrl = value,
-
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -198,34 +203,30 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 100, right: 100, top: 30),
-                              child: Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 30),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        Icons.currency_rupee,
-                                        size: 40,
-                                      ),
-                                      Text(
-                                        widget.Amount,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 35,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
+                              child: TextFormField(
+                                initialValue: widget.Amount,
+                                onChanged: (value) => Amount_ctrl = value,
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.currency_rupee,
+                                    size: 40,
+                                  ),
+                                  contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(20.r),
+                                    borderSide: BorderSide(width: 2),
                                   ),
                                 ),
-                                height: 70.h,
-                                width: 180.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    border: Border.all(width: 2)),
                               ),
                             ),
                             Padding(
@@ -241,16 +242,16 @@ class _Customer_BillpaymentState extends State<Customer_Billpayment> {
                                         left: 49, right: 30),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Center(
                                             child: Text(
-                                          "Pay",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25.sp,
-                                              fontWeight: FontWeight.bold),
-                                        ))
+                                              "Pay",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 25.sp,
+                                                  fontWeight: FontWeight.bold),
+                                            ))
                                       ],
                                     ),
                                   ),

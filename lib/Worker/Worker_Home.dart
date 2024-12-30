@@ -379,7 +379,7 @@ class _Worker_RequestsState extends State<Worker_Requests> {
                               Text(
                                 request['Customer_user_name'] ?? 'Unknown',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
@@ -400,7 +400,7 @@ class _Worker_RequestsState extends State<Worker_Requests> {
                               ),
                               Icon(
                                 Icons.info_outline,
-                                size: 20,
+                                size: 19,
                                 color: Colors.blueAccent,
                               ),
                             ],
@@ -506,7 +506,7 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -524,7 +524,7 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                             Text(
                               request['Customer_user_name'] ?? 'Unknown',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -605,8 +605,8 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                                               )
                                             : request["Payment"] == 5
                                                 ? Container(
-                                                    width: 100.w,
-                                                    height: 50.h,
+                                                    width: 150.w,
+                                                    height: 25.h,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -624,8 +624,8 @@ class _Worker_AcceptedState extends State<Worker_Accepted> {
                                                     ),
                                                   )
                                                 : Container(
-                                                    width: 200.w,
-                                                    height: 20.h,
+                                                    width: 150.w,
+                                                    height: 25.h,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius

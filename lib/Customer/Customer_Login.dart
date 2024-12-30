@@ -23,6 +23,7 @@ class _Customer_LoginState extends State<Customer_Login> {
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+  bool passwordVisible = true; // For toggling password visibility
 
   // Login method with role verification and authentication after Firestore check
   void loginCustomer() async {
@@ -33,8 +34,7 @@ class _Customer_LoginState extends State<Customer_Login> {
 
       try {
         QuerySnapshot userSnapshot = await _firestore
-            .collection(
-                'CustomerLogin') // Ensure this is the correct collection name
+            .collection('CustomerLogin') // Ensure this is the correct collection name
             .where('Email', isEqualTo: email)
             .limit(1) // Limit to 1 result
             .get();
@@ -42,30 +42,23 @@ class _Customer_LoginState extends State<Customer_Login> {
           id = userSnapshot.docs[0].id;
           SharedPreferences data = await SharedPreferences.getInstance();
           data.setString('Customer_id', id);
-          print("///////////////////////////////////////");
-          print(id);
-          print("///////////////////////////////////////");
+          print("Customer ID: $id");
         }
 
         if (userSnapshot.docs.isEmpty) {
-          // No user document found with this email
           showErrorDialog("No customer record found with this email.");
         } else {
-          // Get user document and verify role
           DocumentSnapshot userDoc = userSnapshot.docs.first;
           String role = userDoc.get('Role');
 
-          // Verify if the user is a customer
           if (role == 'customer') {
-            // Now authenticate the user with Firebase
             try {
               UserCredential userCredential =
-                  await _auth.signInWithEmailAndPassword(
+              await _auth.signInWithEmailAndPassword(
                 email: email,
                 password: password,
               );
 
-              // If login successful, navigate to the Customer Home page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -73,21 +66,18 @@ class _Customer_LoginState extends State<Customer_Login> {
                 ),
               );
             } catch (e) {
-              // Firebase authentication failed
               showErrorDialog("Login failed. Please check your credentials.");
             }
           } else {
-            // Role mismatch, show error and sign out
             showErrorDialog("This account is not registered as a customer.");
           }
         }
       } catch (e) {
-        // Catch Firestore or other errors
         showErrorDialog("An error occurred. Please try again.");
         print("Error: $e");
       } finally {
         setState(() {
-          isLoading = false; // Stop loading state
+          isLoading = false;
         });
       }
     }
@@ -168,6 +158,7 @@ class _Customer_LoginState extends State<Customer_Login> {
                     ),
                     TextFormField(
                       onChanged: (value) => password = value,
+                      obscureText: passwordVisible,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -176,13 +167,24 @@ class _Customer_LoginState extends State<Customer_Login> {
                         }
                         return null;
                       },
-                      obscureText: true,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey.shade300,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
                           borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -203,10 +205,10 @@ class _Customer_LoginState extends State<Customer_Login> {
                         child: isLoading
                             ? CircularProgressIndicator(color: Colors.white)
                             : Text(
-                                "Login",
-                                style: TextStyle(
-                                    fontSize: 18.sp, color: Colors.white),
-                              ),
+                          "Login",
+                          style: TextStyle(
+                              fontSize: 18.sp, color: Colors.white),
+                        ),
                       ),
                     ),
                     SizedBox(height: 20.h),
